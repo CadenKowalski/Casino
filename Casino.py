@@ -429,7 +429,7 @@ def LowRiskSlots(Bet):
         if DescriptionYN != 'yes' and DescriptionYN != 'no':
             while DescriptionYN != 'yes' and DescriptionYN != 'no':
                 print('Invalid input')
-                DesecriptionYN = input('Do you want a description of this game').lower()
+                DesecriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN == 'yes':
             print('When the "LowRiskSlots" window pops up, click anywhere on it to start the slots machine. Once it finishes, if the number on the screen matches the number next to "Winning Number", you won. After the animation, the window will close automatically and tell you how much to won or lost. If you are in full screen mode, exit and click on the "LowRiskSlots" window.')
         GUI = GraphWin('LowRiskSlots',650,650)
@@ -595,6 +595,13 @@ def Hangman(Bet):
         print('Sorry th maximum bet for this game is 1000')
         while int(Bet) > 1000:
             Bet = input('Bet: ')
+    DescriptionYN = input('Do you want a description of this game?: ').lower()
+    if DescriptionYN != 'yes' and DescriptionYN != 'no':
+            while DescriptionYN != 'yes' and DescriptionYN != 'no':
+                print('Invalid input')
+                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+    if DescriptionYN == 'yes':
+        print('When the game starts, choose if you want to make your own word or select one from a list. If you choose your own word and are in full screen mode, exit and click on the "Hangman Input" window. Once you have entered your word, click anywhere within the window to set it. After that, type your letter guess and then it will tell you if that letter is in the word. You have 7 wrong guesses and once you are out, you lose.') 
     inputt = input('Do you want to create your own word or select one from a predetermined list? If you choose your own word, you will get a bigger reward. (own/predetermined): ')
     if inputt == 'own':
         print('If your word is over 11 letters, you will get a bonus.')
