@@ -131,13 +131,6 @@ def Dice(Bet):
                 Money += (Risk * int(Bet))
             print('Money:', Money)
     else:
-        DescriptionYN = input('Do you want a description of this game?: ').lower()
-        if DescriptionYN != 'yes' and DescriptionYN != 'no':
-            while DescriptionYN != 'yes' and DescriptionYN != 'no':
-                print('Invalid input')
-                DesecriptionYN = input('Do you want a description of this game?: ').lower()
-        if DescriptionYN == 'yes':
-            print('When you start the game, a dice will roll and return a value from 1-6. If that value is 2-6, it is added to your turn score. Then, it asks you if you want to roll again. If you say yes, the process will repeat. If not, your turn score will be added to your overall score. However, if you choose to roll again and roll a 1, the points from your turn get erased and not added to your overall score.')
         HouseTotal = 0
         PlayerTotal = 0
         win = False
@@ -298,70 +291,70 @@ def BlackJack(Bet):
             Card2 = int(input('Card2 = '))
             PlayerTotal += Card1
             PlayerTotal += Card2
-        if Card1 + Card2 == 21:
-            print('Black Jack')
-            Money += 5 * int(Bet)
-            print('Money:',Money)
-        else:
-            if Card1 == 1:
-                print('Your first card is a 1')
-            if Card1 == 11:
-                print('Your first card is an Ace')
-            if Card1 != 1 and Card1 != 11:
-                print('Your first card is a',Card1)
-            if Card2 == 1:
-                print('Your second card is a 1')
-                print('Your total is',PlayerTotal)
-                print("The House's face up total is",(HouseTotal - CTotal))
-            if Card2 == 11:
-                print('Your second card is an Ace')
-                print('Your total is',PlayerTotal)
-                print("The House's face up total is",(HouseTotal - CTotal))
-            if Card2 != 1 and Card2 != 11:
-                print('Your second card is a',Card2)
-                print('Your total is',PlayerTotal)
-                print("The House's face up total is a",(HouseTotal - CTotal)) 
-            HitStay = input('Do you want to hit or stay?: ').lower()
-            if HitStay != 'hit' and HitStay != 'stay':
-                while HitStay != 'hit' and HitStay != 'stay':
-                    print('Invalid input')
-                    HitStay = input('Do you want to hit or stay: ').lower()
-            while HitStay == 'hit' and PlayerTotal <= 21:
-                Card = int(input('Card = '))
-                if Card == 11 or Card == 12 or Card == 13:
-                    Card = 10
-                elif Card == 1 or Card == 14:
-                    if PlayerTotal + 11 < 21:
-                        Card = 11
-                    else:
-                        Card = 1
-                PlayerTotal += Card
-                print('Your Card is a',Card)
-                print('Your total is',PlayerTotal)
-                print("The House's Face up total is",(HouseTotal - CTotal))
-                if PlayerTotal <= 21:
-                    HitStay = input('Do you want to hit or stay?: ').lower()
-                    if HitStay != 'hit' and HitStay != 'stay':
-                        while HitStay != 'hit' and HitStay != 'stay':
-                            print('Invalid input')
-                            HitStay = input('Do you want to hit or stay: ').lower()
-            if PlayerTotal > 21:
-                print('Bust')
-                Money -= int(Bet)
-            elif HouseTotal > 21:
-                print('you win. The House had a bust')
-                Risk = int(input('Risk: '))
-                Money += (Risk * int(Bet))
-            elif PlayerTotal > HouseTotal:
-                print('You win. The House had',HouseTotal)
-                Risk = int(input('Risk: '))
-                Money += (Risk * int(Bet))
-            elif HouseTotal > PlayerTotal:
-                print('You lose. The House had',HouseTotal)
-                Money -= int(Bet)
-            elif PlayerTotal == HouseTotal:
-                print('You tied with the House')
-            print('Money:',Money)
+            if Card1 + Card2 == 21:
+                print('Black Jack')
+                Money += 5 * int(Bet)
+                print('Money:',Money)
+            else:
+                if Card1 == 1:
+                    print('Your first card is a 1')
+                if Card1 == 11:
+                    print('Your first card is an Ace')
+                if Card1 != 1 and Card1 != 11:
+                    print('Your first card is a',Card1)
+                if Card2 == 1:
+                    print('Your second card is a 1')
+                    print('Your total is',PlayerTotal)
+                    print("The House's face up total is",(HouseTotal - CTotal))
+                if Card2 == 11:
+                    print('Your second card is an Ace')
+                    print('Your total is',PlayerTotal)
+                    print("The House's face up total is",(HouseTotal - CTotal))
+                if Card2 != 1 and Card2 != 11:
+                    print('Your second card is a',Card2)
+                    print('Your total is',PlayerTotal)
+                    print("The House's face up total is a",(HouseTotal - CTotal)) 
+                HitStay = input('Do you want to hit or stay?: ').lower()
+                if HitStay != 'hit' and HitStay != 'stay':
+                    while HitStay != 'hit' and HitStay != 'stay':
+                        print('Invalid input')
+                        HitStay = input('Do you want to hit or stay: ').lower()
+                while HitStay == 'hit' and PlayerTotal <= 21:
+                    Card = int(input('Card = '))
+                    if Card == 11 or Card == 12 or Card == 13:
+                        Card = 10
+                    elif Card == 1 or Card == 14:
+                        if PlayerTotal + 11 < 21:
+                            Card = 11
+                        else:
+                            Card = 1
+                    PlayerTotal += Card
+                    print('Your Card is a',Card)
+                    print('Your total is',PlayerTotal)
+                    print("The House's Face up total is",(HouseTotal - CTotal))
+                    if PlayerTotal <= 21:
+                        HitStay = input('Do you want to hit or stay?: ').lower()
+                        if HitStay != 'hit' and HitStay != 'stay':
+                            while HitStay != 'hit' and HitStay != 'stay':
+                                print('Invalid input')
+                                HitStay = input('Do you want to hit or stay: ').lower()
+                if PlayerTotal > 21:
+                    print('Bust')
+                    Money -= int(Bet)
+                elif HouseTotal > 21:
+                    print('you win. The House had a bust')
+                    Risk = int(input('Risk: '))
+                    Money += (Risk * int(Bet))
+                elif PlayerTotal > HouseTotal:
+                    print('You win. The House had',HouseTotal)
+                    Risk = int(input('Risk: '))
+                    Money += (Risk * int(Bet))
+                elif HouseTotal > PlayerTotal:
+                    print('You lose. The House had',HouseTotal)
+                    Money -= int(Bet)
+                elif PlayerTotal == HouseTotal:
+                    print('You tied with the House')
+                print('Money:',Money)
     House()
     Player(Bet)
 def HighRiskSlots(Bet):
@@ -431,13 +424,6 @@ def LowRiskSlots(Bet):
             print('Sorry, the maximum bet for this game is 1000')
             while int(Bet) > 1000:
                     Bet = input('Bet: ')
-        DescriptionYN = input('Do you want a description of this game?: ').lower()
-        if DescriptionYN != 'yes' and DescriptionYN != 'no':
-            while DescriptionYN != 'yes' and DescriptionYN != 'no':
-                print('Invalid input')
-                DesecriptionYN = input('Do you want a description of this game?: ').lower()
-        if DescriptionYN == 'yes':
-            print('When the "LowRiskSlots" window pops up, click anywhere on it to start the slots machine. Once it finishes, if the number on the screen matches the number next to "Winning Number", you won. After the animation, the window will close automatically and tell you how much to won or lost. If you are in full screen mode, exit and click on the "LowRiskSlots" window.')
         GUI = GraphWin('LowRiskSlots',650,650)
         GUI.setBackground('Black')
         n = random.randint(1,100)
@@ -601,13 +587,6 @@ def Hangman(Bet):
         print('Sorry th maximum bet for this game is 1000')
         while int(Bet) > 1000:
             Bet = input('Bet: ')
-    DescriptionYN = input('Do you want a description of this game?: ').lower()
-    if DescriptionYN != 'yes' and DescriptionYN != 'no':
-            while DescriptionYN != 'yes' and DescriptionYN != 'no':
-                print('Invalid input')
-                DesecriptionYN = input('Do you want a description of this game?: ').lower()
-    if DescriptionYN == 'yes':
-        print('When the game starts, choose if you want to make your own word or select one from a list. If you choose your own word and are in full screen mode, exit and click on the "Hangman Input" window. Once you have entered your word, click anywhere within the window to set it. After that, type your letter guess and then it will tell you if that letter is in the word. You have 7 wrong guesses and once you are out, you lose.') 
     inputt = input('Do you want to create your own word or select one from a predetermined list? If you choose your own word, you will get a bigger reward. (own/predetermined): ')
     if inputt == 'own':
         print('If your word is over 11 letters, you will get a bonus.')
@@ -984,6 +963,13 @@ print('6.) Exit the Casino')
 game = input('Select the number of the game you want to play: ')
 while game != '6':
     if game == '1':
+        DescriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN != 'yes' and DescriptionYN != 'no':
+            while DescriptionYN != 'yes' and DescriptionYN != 'no':
+                print('Invalid input')
+                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN == 'yes':
+            print('When the "LowRiskSlots" window pops up, click anywhere on it to start the slots machine. Once it finishes, if the number on the screen matches the number next to "Winning Number", you won. After the animation, the window will close automatically and tell you how much to won or lost. If you are in full screen mode, exit and click on the "LowRiskSlots" window.')
         Bet = int(input('Bet: '))
         if (Money - Bet) < 0:
             print('Insuficient Funds')
@@ -1012,6 +998,13 @@ while game != '6':
             HighRiskSlots(Bet)
             PlayAgainT = input('Do you want to play again? y/n: ')
     elif game == '3':
+        DescriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN != 'yes' and DescriptionYN != 'no':
+            while DescriptionYN != 'yes' and DescriptionYN != 'no':
+                print('Invalid input')
+                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN == 'yes':
+            print('When you start the game, a dice will roll and return a value from 1-6. If that value is 2-6, it is added to your turn score. Then, it asks you if you want to roll again. If you say yes, the process will repeat. If not, your turn score will be added to your overall score. However, if you choose to roll again and roll a 1, the points from your turn get erased and not added to your overall score.')
         Bet = int(input('Bet: '))
         if (Money - Bet) < 0:
             print('Insuficient Funds')
@@ -1026,6 +1019,13 @@ while game != '6':
             Dice(Bet)
             PlayAgainTh = input('Do you want to play again? y/n: ')
     elif game == '4':
+        DescriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN != 'yes' and DescriptionYN != 'no':
+            while DescriptionYN != 'yes' and DescriptionYN != 'no':
+                print('Invalid input')
+                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN == 'yes':
+            print('At the start of the game, you will be dealt 2 cards. The total of these to cards will be displayed. After that it will ask you if you want to hit (get another card) or stay (stop getting cards). If you choose to hit, you will be dealt another card and it will be added to your score. If you choose to stay, your total will be compared to the House. If your score is larger than theirs and less than or equal to 21, you win. If your score is less than theirs, you lose. If your score is greater than 21, the House automaticaly wins. If your first 2 cards add up to 21, that is Black Jack and you automatically win')
         Bet = int(input('Bet: '))
         if (Money - Bet) < 0:
             print('Insuficient Funds')
@@ -1040,6 +1040,13 @@ while game != '6':
             BlackJack(Bet)
             PlayAgainF = input('Do you want to play again? y/n: ')
     elif game == '5':
+        DescriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN != 'yes' and DescriptionYN != 'no':
+            while DescriptionYN != 'yes' and DescriptionYN != 'no':
+                print('Invalid input')
+                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN == 'yes':
+            print('When the game starts, choose if you want to make your own word or select one from a list. If you choose your own word and are in full screen mode, exit and click on the "Hangman Input" window. Once you have entered your word, click anywhere within the window to set it. After that, type your letter guess and then it will tell you if that letter is in the word. You have 7 wrong guesses and once you are out, you lose.') 
         Bet = int(input('Bet: '))
         Hangman(Bet)
         if (Money - Bet) < 0:
