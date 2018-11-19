@@ -10,58 +10,58 @@ def Dice(Bet):
         global win
         global PlayerTotal
         if Admin == True:
-            hold = 'no'
+            hold = 'yes'
             turnScore = 0
             CurrentRoll = 0
-            while hold == 'no' and PlayerTotal + turnScore < 100:
+            while hold == 'yes' and PlayerTotal + turnScore < 100:
                 CurrentRoll = int(input('CurrentRoll = '))
                 if CurrentRoll == 1:
                     print('Player rolled a: 1')
-                    hold = 'yes'
+                    hold = 'no'
                 else:
                     turnScore += CurrentRoll
                     print('Player rolled a:', CurrentRoll)
                     print('Player Turn Score:', turnScore)
-                    hold = input('Do you want to hold?: ').lower()
+                    hold = input('Do you want to roll again?: ').lower()
                     if hold != 'yes' and hold != 'no':
                         while hold != 'yes' and hold != 'no':
                             print('Invalid input')
-                            hold = input('Do you want to hold?: ').lower()
-            if hold == 'yes' and CurrentRoll != 1:
+                            hold = input('Do you want to roll again?: ').lower()
+            if hold == 'no' and CurrentRoll != 1:
                 PlayerTotal += turnScore
                 print('Player Total:', PlayerTotal)
                 print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
                 turnScore = 0
-            elif hold == 'yes' and CurrentRoll == 1:
+            elif hold == 'no' and CurrentRoll == 1:
                 turnScore == 0
                 print('Player Total:', PlayerTotal)
                 print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
             if PlayerTotal + turnScore >= 100:
                 win = True
         else:
-            hold = 'no'
+            hold = 'yes'
             turnScore = 0
             CurrentRoll = 0
-            while hold == 'no' and PlayerTotal + turnScore < 100:
+            while hold == 'yes' and PlayerTotal + turnScore < 100:
                 CurrentRoll = random.randint(1,6)
                 if CurrentRoll == 1:
                     print('Player rolled a: 1')
-                    hold = 'yes'
+                    hold = 'no'
                 else:
                     turnScore += CurrentRoll
                     print('Player rolled a:', CurrentRoll)
                     print('Player Turn Score:', turnScore)
-                    hold = input('Do you want to hold?: ').lower()
+                    hold = input('Do you want to roll again?: ').lower()
                     if hold != 'yes' and hold != 'no':
                         while hold != 'yes' and hold != 'no':
                             print('Invalid input')
-                            hold = input('Do you want to hold?: ').lower()
-            if hold == 'yes' and CurrentRoll != 1:
+                            hold = input('Do you want to roll again?: ').lower()
+            if hold == 'no' and CurrentRoll != 1:
                 PlayerTotal += turnScore
                 print('Player Total:', PlayerTotal)
                 print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
                 turnScore = 0
-            elif hold == 'yes' and CurrentRoll == 1:
+            elif hold == 'no' and CurrentRoll == 1:
                 turnScore == 0
                 print('Player Total:', PlayerTotal)
                 print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
@@ -119,19 +119,25 @@ def Dice(Bet):
                     scoring = input('Automatic or Custom: ').lower()
             if scoring == 'automatic':
                 if maximumP - 10 <= maximumC:
-                    Money += (2 * int(Bet))
+                    Money += (1.5 * int(Bet))
                 elif maximumP - 20 <= maximumC:
-                    Money += (3 * int(Bet))
+                    Money += (2 * int(Bet))
                 elif maximumP - 30 <= maximumC:
-                    Money += (4 * int(Bet))
+                    Money += (2.5 * int(Bet))
                 else:
-                    Money += (5 * int(Bet))
+                    Money += (3 * int(Bet))
             elif scoring == 'custom':
                 Risk = int(input('Risk: '))
                 Money += (Risk * int(Bet))
             print('Money:', Money)
-            
     else:
+        DescriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN != 'yes' and DescriptionYN != 'no':
+            while DescriptionYN != 'yes' and DescriptionYN != 'no':
+                print('Invalid input')
+                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN == 'yes':
+            print('When you start the game, a dice will roll and return a value from 1-6. If that value is 2-6, it is added to your turn score. Then, it asks you if you want to roll again. If you say yes, the process will repeat. If not, your turn score will be added to your overall score. However, if you choose to roll again and roll a 1, the points from your turn get erased and not added to your overall score.')
         HouseTotal = 0
         PlayerTotal = 0
         win = False
@@ -148,13 +154,13 @@ def Dice(Bet):
         else:
             print('Player Wins!')
             if maximumP - 10 <= maximumC:
-                Money += (2 * int(Bet))
+                Money += (1.5 * int(Bet))
             elif maximumP - 20 <= maximumC:
-                Money += (3 * int(Bet))
+                Money += (2 * int(Bet))
             elif maximumP - 30 <= maximumC:
-                Money += (4 * int(Bet))
+                Money += (2.5 * int(Bet))
             else:
-                Money += (5 * int(Bet))
+                Money += (3 * int(Bet))
             print('Money:', Money)
 
 def BlackJack(Bet):
@@ -1075,4 +1081,4 @@ while game != '6':
 if Money < 100000:
     print('Losings:', 100000 - Money)
 elif Money > 100000:
-    print('Earnings:', Money - 100000)
+    print('Earnings:', Money - 100000) 
