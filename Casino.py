@@ -260,21 +260,38 @@ def BlackJack(Bet):
     House()
     Player(Bet)
 def HighRiskSlots(Bet):
-    if int(Bet) < 200:
-        print('Sorry th minimum bet for this game is 200')
-        while int(bet) < 200:
-            Bet = input('Bet: ')
     global Money
-    GUI = GraphWin('HighRiskSlots',650,650)
+    if Admin == False:
+        if int(Bet) < 1000:
+            print('Sorry the minimum bet for this game is 1000')
+            while int(Bet) < 1000:
+                Bet = input('Bet: ')
+    print('If you are in full screen mode, exit and click on the "HighRiskSlots" window.')
+    GUI = GraphWin('HighRiskSlots', 650, 650)
     GUI.setBackground('Black')
-    nOne = random.randint(1,10)
-    nTwo = random.randint(1,10)
-    a = Text(Point(325,325),'Press Anywhere To Start')
+    if Admin == False:
+        n = random.randint(1,1000)
+        Winning_Number = random.randint(1,1000)
+    else:
+        Winning_Number = int(input('Winning Number = '))
+        n = int(input('Number = '))
+    a = Text(Point(325,325), 'Press Anywhere To Start')
     a.setTextColor('Red')
     a.setSize(40)
     a.draw(GUI)
     GUI.getMouse()
     a.undraw()
+    wns_one = random.randint(1,9)
+    wns_two = random.randint(1,9)
+    wns_three = random.randint(1,9)
+    wnt = Text(Point(280,550), 'The winning number is: ')
+    wnt.setSize(40)
+    wnt.setTextColor('Red')
+    wnt.draw(GUI)
+    wn = Text(Point(520,550), Winning_Number)
+    wn.setSize(40)
+    wn.setTextColor('Red')
+    wn.draw(GUI)
     for numbers in range(5):
         for number in range (9):
             a = Text(Point(130,325),number)
@@ -293,8 +310,15 @@ def HighRiskSlots(Bet):
             a.undraw()
             b.undraw()
             c.undraw()
-    if nOne == nTwo:
-        Money += 50 * int(Bet)
+    if n == Winning_Number:
+        show_number = Text(Point(325,325), Winning_Number)
+        show_number.setSize(300)
+        show_number.setTextColor('Red')
+        show_number.draw(GUI)
+        time.sleep(1)
+        show_number.undraw()
+        wn.undraw()
+        wnt.undraw()
         a = Text(Point(325,325),'You Win!')
         a.setSize(100)
         a.setTextColor('Red')
@@ -305,8 +329,23 @@ def HighRiskSlots(Bet):
             GUI.setBackground('Black')
             time.sleep(.5)
         GUI.close()
-        print('Money: ', Money)
+        if Admin == False:
+            Money += 1000 * int(Bet)
+            print('Money:', Money)
+        else:
+            GUI.close()
+            Risk = int(input('Risk: '))
+            Money += Risk * int(Bet)
+            print('Money:', Money)
     else:
+        show_number = Text(Point(325,325), n)
+        show_number.setSize(300)
+        show_number.setTextColor('Red')
+        show_number.draw(GUI)
+        time.sleep(1)
+        show_number.undraw()
+        wn.undraw()
+        wnt.undraw()
         Money -= int(Bet)
         a = Text(Point(325,325),'You Lose')
         a.setSize(100)
@@ -384,7 +423,7 @@ def LowRiskSlots(Bet):
             time.sleep(.5)
         GUI.close()
         if Admin == False:
-            Money += 5 * int(Bet)
+            Money += 100 * int(Bet)
             print('Money:', Money)
         else:
             GUI.close()
@@ -492,14 +531,15 @@ def Hangman(Bet):
             print('The word was:', word)
             Money -= Bet
             print('Money:',Money)
-    if int(Bet) < 200:
-        print('Sorry th minimum bet for this game is 200')
-        while int(Bet) < 200:
-            Bet = input('Bet: ')
-    if int(Bet) > 1000:
-        print('Sorry th maximum bet for this game is 1000')
-        while int(Bet) > 1000:
-            Bet = input('Bet: ')
+    if Admin == False:
+        if int(Bet) < 200:
+            print('Sorry th minimum bet for this game is 200')
+            while int(Bet) < 200:
+                Bet = input('Bet: ')
+        if int(Bet) > 1000:
+            print('Sorry th maximum bet for this game is 1000')
+            while int(Bet) > 1000:
+                Bet = input('Bet: ')
     inputt = input('Do you want to create your own word or select one from a predetermined list? If you choose your own word, you will get a bigger reward. (own/predetermined): ')
     if inputt == 'own':
         print('If your word is over 11 letters, you will get a bonus.')
@@ -608,8 +648,8 @@ global Admin
 Admin = False
 Money = 100000
 print('Money: 100000')
-print('1.) Low Risk Slots, Risk: 10x')
-print('2.) High Risk Slots, Risk: 100x')
+print('1.) Low Risk Slots, Risk: 100x')
+print('2.) High Risk Slots, Risk: 1000x')
 print('3.) Dice, Risk: 2-5x')
 print('4.) Black Jack, Risk: 2x or 5x')
 print('5.) Hangman, Risk: 2-4x')
@@ -623,7 +663,7 @@ while game != '6':
                 print('Invalid input')
                 DesecriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN == 'yes':
-            print('When the "LowRiskSlots" window pops up, click anywhere on it to start the slots machine. Once it finishes, if the number on the screen matches the number next to "Winning Number", you won. After the animation, the window will close automatically and tell you how much to won or lost. If you are in full screen mode, exit and click on the "LowRiskSlots" window.')
+            print('When the "LowRiskSlots" window pops up, click anywhere on it to start the slots machine. Once it finishes, if the number on the screen matches the number next to "Winning Number", you won. After the animation, the window will close automatically and tell you how much you won or lost. If you are in full screen mode, exit and click on the "LowRiskSlots" window.')
         Bet = int(input('Bet: '))
         if (Money - Bet) < 0:
             print('Insuficient Funds')
@@ -638,6 +678,13 @@ while game != '6':
             LowRiskSlots(Bet)
             PlayAgainO = input('Do you want to play again?: ')
     elif game == '2':
+        DescriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN != 'yes' and DescriptionYN != 'no':
+            while DescriptionYN != 'yes' and DescriptionYN != 'no':
+                print('Invalid input')
+                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN == 'yes':
+            print('When the "HighRiskSlots" window pops up, click anywhere on it to start the slots machine. Once it finishes, if the number on the screen matches the number next to "Winning Number", you won. After the animation, the window will close automatically and tell you how much you won or lost. If you are in full screen mode, exit and click on the "HighRiskSlots" window.')
         Bet = int(input('Bet: '))
         if (Money - Bet) < 0:
             print('Insuficient Funds')
@@ -730,8 +777,8 @@ while game != '6':
                 print('Money:', Money)
                 game = '6'
     if game != '6':
-        print('1.) Low Risk Slots, Risk: 10x')
-        print('2.) High Risk Slots, Risk: 100x')
+        print('1.) Low Risk Slots, Risk: 100x')
+        print('2.) High Risk Slots, Risk: 1000x')
         print('3.) Dice, Risk: 2-5x')
         print('4.) Black Jack, Risk: 2x or 5x')
         print('5.) Hangman, Risk: 2-4x')
