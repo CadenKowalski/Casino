@@ -119,11 +119,11 @@ def Dice(Bet):
                     scoring = input('Automatic or Custom: ').lower()
             if scoring == 'automatic':
                 if maximumP - 10 <= maximumC:
-                    Money += (1.5 * int(Bet))
+                    Money += int((1.5 * int(Bet)))
                 elif maximumP - 20 <= maximumC:
                     Money += (2 * int(Bet))
                 elif maximumP - 30 <= maximumC:
-                    Money += (2.5 * int(Bet))
+                    Money += int((2.5 * int(Bet)))
                 else:
                     Money += (3 * int(Bet))
             elif scoring == 'custom':
@@ -147,11 +147,11 @@ def Dice(Bet):
         else:
             print('Player Wins!')
             if maximumP - 10 <= maximumC:
-                Money += (1.5 * int(Bet))
+                Money += int((1.5 * int(Bet)))
             elif maximumP - 20 <= maximumC:
                 Money += (2 * int(Bet))
             elif maximumP - 30 <= maximumC:
-                Money += (2.5 * int(Bet))
+                Money += int((2.5 * int(Bet)))
             else:
                 Money += (3 * int(Bet))
             print('Money:', Money)
@@ -975,28 +975,28 @@ while game != '6':
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
         LowRiskSlots(Bet)
-        PlayAgainO = input('Do you want to play again? y/n: ')
-        while PlayAgainO == 'y':
+        PlayAgainO = input('Do you want to play again?: ')
+        while PlayAgainO == 'yes':
             Bet = int(input('Bet: '))
             if (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             LowRiskSlots(Bet)
-            PlayAgainO = input('Do you want to play again? y/n: ')
+            PlayAgainO = input('Do you want to play again?: ')
     elif game == '2':
         Bet = int(input('Bet: '))
         if (Money - Bet) < 0:
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
         HighRiskSlots(Bet)
-        PlayAgainT = input('Do you want to play again? y/n: ')
-        while PlayAgainT == 'y':
+        PlayAgainT = input('Do you want to play again?: ')
+        while PlayAgainT == 'yes':
             Bet = int(input('Bet: '))
             if (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             HighRiskSlots(Bet)
-            PlayAgainT = input('Do you want to play again? y/n: ')
+            PlayAgainT = input('Do you want to play again?: ')
     elif game == '3':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN != 'yes' and DescriptionYN != 'no':
@@ -1010,14 +1010,14 @@ while game != '6':
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
         Dice(Bet)
-        PlayAgainTh = input('Do you want to play again? y/n: ')
-        while PlayAgainTh =='y':
+        PlayAgainTh = input('Do you want to play again?: ')
+        while PlayAgainTh =='yes':
             Bet = int(input('Bet: '))
             if (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             Dice(Bet)
-            PlayAgainTh = input('Do you want to play again? y/n: ')
+            PlayAgainTh = input('Do you want to play again?: ')
     elif game == '4':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN != 'yes' and DescriptionYN != 'no':
@@ -1031,14 +1031,14 @@ while game != '6':
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
         BlackJack(Bet)
-        PlayAgainF = input('Do you want to play again? y/n: ')
-        while PlayAgainF =='y':
+        PlayAgainF = input('Do you want to play again?: ')
+        while PlayAgainF =='yes':
             Bet = int(input('Bet: '))
             if (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             BlackJack(Bet)
-            PlayAgainF = input('Do you want to play again? y/n: ')
+            PlayAgainF = input('Do you want to play again?: ')
     elif game == '5':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN != 'yes' and DescriptionYN != 'no':
@@ -1052,14 +1052,14 @@ while game != '6':
         if (Money - Bet) < 0:
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
-        PlayAgainFI = input('Do you want to play again? y/n: ')
-        while PlayAgainFI == 'y':
+        PlayAgainFI = input('Do you want to play again?: ')
+        while PlayAgainFI == 'yes':
             Bet = int(input('Bet: '))
             Hangman(Bet)
             if (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
-            PlayAgainFI = input('Do you want to play again? y/n: ')
+            PlayAgainFI = input('Do you want to play again?: ')
     elif game == '7':
         password = input('Security ID: ')
         if password == '699':
