@@ -719,6 +719,7 @@ def BS(Bet):
                     for f in played_cards:
                         PlayerHand.append(f)
                     played_cards = []
+                    Sort(PlayerHand)
                 else:
                     pickAI = random.randint(1,3)
                     for f in played_cards:
@@ -732,7 +733,8 @@ def BS(Bet):
                     if lie == True:
                         for f in played_cards:
                             PlayerHand.append(f)
-                            played_cards = []
+                        played_cards = []
+                        Sort(PlayerHand)
                     else:
                         pickAI = random.randint(1,3)
                         for f in played_cards:
@@ -748,6 +750,7 @@ def BS(Bet):
                     for f in played_cards:
                         PlayerHand.append(f)
                     played_cards = []
+                    Sort(PlayerHand)
                 else:
                     win = True
             else:
@@ -758,7 +761,8 @@ def BS(Bet):
                     if lie == True:
                         for f in played_cards:
                             PlayerHand.append(f)
-                            played_cards = []
+                        played_cards = []
+                        Sort(PlayerHand)
                     else:
                         win = True
         if win != True:
@@ -780,6 +784,9 @@ def BS(Bet):
                     hands[AI].remove(CurrentCard)
                     print('House', AI, 'played 1,', CurrentCard)
                     PlayerCall_BS = input('Do you want to call BS?: ')
+                    while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
+                        print('Invalid input')
+                        PlayerCall_BS = input('Do you want to call BS?: ')
                     if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
                         print('House', AI, 'did play 1,', CurrentCard)
                         for d in played_cards:
@@ -790,6 +797,9 @@ def BS(Bet):
                 elif hands[AI].count(CurrentCard) > 1:
                     print('House', AI, 'played', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
                     PlayerCall_BS = input('Do you want to call BS?: ')
+                    while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
+                        print('Invalid input')
+                        PlayerCall_BS = input('Do you want to call BS?: ')
                     if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
                         print('House', AI, 'did play', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
                         for d in played_cards:
@@ -815,6 +825,9 @@ def BS(Bet):
                     del hands[AI][card]
                     print('House', AI, 'played 1,', CurrentCard)
                     PlayerCall_BS = input('Do you want to call BS?: ')
+                    while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
+                        print('Invalid input')
+                        PlayerCall_BS = input('Do you want to call BS?: ')
                     if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
                         print('Correct, House', AI, 'did not play 1,', CurrentCard)
                         for d in played_cards:
@@ -1024,7 +1037,7 @@ while game != '7':
                 print('Invalid input')
                 DesecriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN == 'yes':
-            print('')
+            print('When the game starts, you will be asked how many players you want to play with. For example, if I put "4", it would be me and 3 Computers. Then it will start the game. The first play of the game is allways putting down an ace face up so if you have an ace, you will go first but if you do not, one of the computers will go first. Then on your turn it will show you your hand and then tell you what card you are supposed to put down. ones are Aces, elevens are Jacks, twelves are Queens, and thirteens are Kings. It will ask you what card you want to put down and you can either put down the correct card or lie and put down a different card if you do not have the one you need. Then it will ask you how many of the card you want to put down so if you have more than one, you can put them all down together. Then on the computers turn, it will tell you what they played and how many cards they played. Then it will ask you if you want to call BS. By calling BS you are saying that you think they are lying and not putting down the card they are supposed to. If you are right and they are lying, they have to take all of the cards that have been played. If you are wrong and they did play what they were supposed to, you have to take all of the cards. The first person to 0 cards wins.')
         Bet = int(input('Bet: '))
         BS(Bet)
         if (Money - Bet) < 0:
