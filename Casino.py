@@ -648,6 +648,7 @@ def BS(Bet):
     global CurrentCard
     global played_cards
     global win
+    global Money
     if Admin == False:
         if int(Bet) < 1000:
             print('Sorry, the minimum bet for this game is 1000')
@@ -745,6 +746,7 @@ def BS(Bet):
         elif CurrentCard == 13:
             CurrentCard = 1
         if len(PlayerHand) == 0:
+            print('The house called BS on you')
             if Admin == False:
                 if lie == True:
                     for f in played_cards:
@@ -775,91 +777,94 @@ def BS(Bet):
         global CurrentCard
         global played_cards
         global hands
-        for AI in range(1, num_AI):
-            if Admin == True:
-                print(hands[AI])
-            if CurrentCard in hands[AI]:
-                if hands[AI].count(CurrentCard) == 1:
-                    played_cards.append(CurrentCard)
-                    hands[AI].remove(CurrentCard)
-                    print('House', AI, 'played 1,', CurrentCard)
-                    PlayerCall_BS = input('Do you want to call BS?: ')
-                    while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
-                        print('Invalid input')
+        while win != True:
+            for AI in range(1, num_AI):
+                if Admin == True:
+                    print(hands[AI])
+                if CurrentCard in hands[AI]:
+                    if hands[AI].count(CurrentCard) == 1:
+                        played_cards.append(CurrentCard)
+                        hands[AI].remove(CurrentCard)
+                        print('House', AI, 'played 1,', CurrentCard)
                         PlayerCall_BS = input('Do you want to call BS?: ')
-                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
-                        print('House', AI, 'did play 1,', CurrentCard)
-                        for d in played_cards:
-                            PlayerHand.append(d)                                                                                                    
-                        Sort(PlayerHand)
-                        played_cards = []
-                        print('Your hand:', PlayerHand)
-                elif hands[AI].count(CurrentCard) > 1:
-                    print('House', AI, 'played', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
-                    PlayerCall_BS = input('Do you want to call BS?: ')
-                    while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
-                        print('Invalid input')
+                        while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
+                            print('Invalid input')
+                            PlayerCall_BS = input('Do you want to call BS?: ')
+                        if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                            print('House', AI, 'did play 1,', CurrentCard)
+                            for d in played_cards:
+                                PlayerHand.append(d)                                                                                                    
+                            Sort(PlayerHand)
+                            played_cards = []
+                            print('Your hand:', PlayerHand)
+                    elif hands[AI].count(CurrentCard) > 1:
+                        print('House', AI, 'played', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
                         PlayerCall_BS = input('Do you want to call BS?: ')
-                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
-                        print('House', AI, 'did play', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
-                        for d in played_cards:
-                            PlayerHand.append(d)
-                        Sort(PlayerHand)
-                        played_cards = []
-                        print('Your hand:', PlayerHand)
-                    for e in range(hands[AI].count(CurrentCard)):
-                            played_cards.append(CurrentCard)
-                            hands[AI].remove(CurrentCard)
-                    
-            else:
-                for card in hands[AI]:
-                    if hands[AI].count(card) > 1:
-                        more = True
-                        break
-                    else:
-                        more = False
-                one_or_more = random.randint(1,2)
-                if one_or_more == 1 or more == False:
-                    card = random.randint(0, len(hands[AI]) - 1)
-                    played_cards.append(hands[AI][card])
-                    del hands[AI][card]
-                    print('House', AI, 'played 1,', CurrentCard)
-                    PlayerCall_BS = input('Do you want to call BS?: ')
-                    while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
-                        print('Invalid input')
-                        PlayerCall_BS = input('Do you want to call BS?: ')
-                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
-                        print('Correct, House', AI, 'did not play 1,', CurrentCard)
-                        for d in played_cards:
-                            hands[AI].append(d)
-                        played_cards = []
-                    else:
-                        print('Penut Butter')
+                        while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
+                            print('Invalid input')
+                            PlayerCall_BS = input('Do you want to call BS?: ')
+                        if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                            print('House', AI, 'did play', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
+                            for d in played_cards:
+                                PlayerHand.append(d)
+                            Sort(PlayerHand)
+                            played_cards = []
+                            print('Your hand:', PlayerHand)
+                        for e in range(hands[AI].count(CurrentCard)):
+                                played_cards.append(CurrentCard)
+                                hands[AI].remove(CurrentCard)
+                        
                 else:
                     for card in hands[AI]:
                         if hands[AI].count(card) > 1:
-                            ammount = hands[AI].count(card)
+                            more = True
                             break
-                    for g in range(ammount):
-                        played_cards.append(card)
-                        hands[AI].remove(card)
-                    print('House', AI, 'played', ammount, ',', str(CurrentCard) + "'s")
-                    PlayerCall_BS = input('Do you want to call BS?: ')
-                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
-                        print('Correct, House', AI, 'did not play', ammonut, ',', str(CurrentCard) + "'s")
-                        for d in played_cards:
-                            hands[AI].append(d)
-                        played_cards = []
+                        else:
+                            more = False
+                    one_or_more = random.randint(1,2)
+                    if one_or_more == 1 or more == False:
+                        card = random.randint(0, len(hands[AI]) - 1)
+                        played_cards.append(hands[AI][card])
+                        del hands[AI][card]
+                        print('House', AI, 'played 1,', CurrentCard)
+                        PlayerCall_BS = input('Do you want to call BS?: ')
+                        while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
+                            print('Invalid input')
+                            PlayerCall_BS = input('Do you want to call BS?: ')
+                        if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                            print('Correct, House', AI, 'did not play 1,', CurrentCard)
+                            for d in played_cards:
+                                hands[AI].append(d)
+                            played_cards = []
+                        else:
+                            print('Penut Butter')
                     else:
-                        print('Penut Butter')
-            if CurrentCard < 13:
-                CurrentCard += 1
-            elif CurrentCard == 13:
-                CurrentCard = 1
-        for b in range(1,num_AI):
-            print('House', str(b) , 'has', len(hands[b]), 'cards left')
-        if len(hands[AI]) == 0:
-            win == True
+                        for card in hands[AI]:
+                            if hands[AI].count(card) > 1:
+                                ammount = hands[AI].count(card)
+                                break
+                        for g in range(ammount):
+                            played_cards.append(card)
+                            hands[AI].remove(card)
+                        print('House', AI, 'played', ammount, ',', str(CurrentCard) + "'s")
+                        PlayerCall_BS = input('Do you want to call BS?: ')
+                        if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                            print('Correct, House', AI, 'did not play', ammount, ',', str(CurrentCard) + "'s")
+                            for d in played_cards:
+                                hands[AI].append(d)
+                            played_cards = []
+                        else:
+                            print('Penut Butter')
+                if CurrentCard < 13:
+                    CurrentCard += 1
+                elif CurrentCard == 13:
+                    CurrentCard = 1
+                if len(hands[AI]) == 0:
+                    win = True
+                    break
+            if win != True:
+                for b in range(1,num_AI):
+                    print('House', str(b) , 'has', len(hands[b]), 'cards left')
         print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
     Num_Players = int(input('How many players?: '))
     Deal(Num_Players)
