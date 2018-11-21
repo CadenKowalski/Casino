@@ -668,9 +668,11 @@ def BS(Bet):
                 hand.append(cards[index])
                 del cards[index]
         if len(cards) > 0:
+            print(cards)
             for z in range(52 - ((y + 1) *3)):
                 if len(cards) == 1:
                     hands[z].append(cards[0])
+                    del cards[0]
                 elif len(cards) > 1:
                     index = random.randint(0, len(cards) - 1)
                     hands[z].append(cards[index])
@@ -777,94 +779,93 @@ def BS(Bet):
         global CurrentCard
         global played_cards
         global hands
-        while win != True:
-            for AI in range(1, num_AI):
-                if Admin == True:
-                    print(hands[AI])
-                if CurrentCard in hands[AI]:
-                    if hands[AI].count(CurrentCard) == 1:
-                        played_cards.append(CurrentCard)
-                        hands[AI].remove(CurrentCard)
-                        print('House', AI, 'played 1,', CurrentCard)
+        for AI in range(1, num_AI):
+            if Admin == True:
+                print(hands[AI])
+            if CurrentCard in hands[AI]:
+                if hands[AI].count(CurrentCard) == 1:
+                    played_cards.append(CurrentCard)
+                    hands[AI].remove(CurrentCard)
+                    print('House', AI, 'played 1,', CurrentCard)
+                    PlayerCall_BS = input('Do you want to call BS?: ')
+                    while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
+                        print('Invalid input')
                         PlayerCall_BS = input('Do you want to call BS?: ')
-                        while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
-                            print('Invalid input')
-                            PlayerCall_BS = input('Do you want to call BS?: ')
-                        if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
-                            print('House', AI, 'did play 1,', CurrentCard)
-                            for d in played_cards:
-                                PlayerHand.append(d)                                                                                                    
-                            Sort(PlayerHand)
-                            played_cards = []
-                            print('Your hand:', PlayerHand)
-                    elif hands[AI].count(CurrentCard) > 1:
-                        print('House', AI, 'played', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
+                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                        print('House', AI, 'did play 1,', CurrentCard)
+                        for d in played_cards:
+                            PlayerHand.append(d)                                                                                                    
+                        Sort(PlayerHand)
+                        played_cards = []
+                        print('Your hand:', PlayerHand)
+                elif hands[AI].count(CurrentCard) > 1:
+                    print('House', AI, 'played', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
+                    PlayerCall_BS = input('Do you want to call BS?: ')
+                    while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
+                        print('Invalid input')
                         PlayerCall_BS = input('Do you want to call BS?: ')
-                        while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
-                            print('Invalid input')
-                            PlayerCall_BS = input('Do you want to call BS?: ')
-                        if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
-                            print('House', AI, 'did play', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
-                            for d in played_cards:
-                                PlayerHand.append(d)
-                            Sort(PlayerHand)
-                            played_cards = []
-                            print('Your hand:', PlayerHand)
-                        for e in range(hands[AI].count(CurrentCard)):
-                                played_cards.append(CurrentCard)
-                                hands[AI].remove(CurrentCard)
-                        
+                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                        print('House', AI, 'did play', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
+                        for d in played_cards:
+                            PlayerHand.append(d)
+                        Sort(PlayerHand)
+                        played_cards = []
+                        print('Your hand:', PlayerHand)
+                    for e in range(hands[AI].count(CurrentCard)):
+                            played_cards.append(CurrentCard)
+                            hands[AI].remove(CurrentCard)
+                    
+            else:
+                for card in hands[AI]:
+                    if hands[AI].count(card) > 1:
+                        more = True
+                        break
+                    else:
+                        more = False
+                one_or_more = random.randint(1,2)
+                if one_or_more == 1 or more == False:
+                    card = random.randint(0, len(hands[AI]) - 1)
+                    played_cards.append(hands[AI][card])
+                    del hands[AI][card]
+                    print('House', AI, 'played 1,', CurrentCard)
+                    PlayerCall_BS = input('Do you want to call BS?: ')
+                    while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
+                        print('Invalid input')
+                        PlayerCall_BS = input('Do you want to call BS?: ')
+                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                        print('Correct, House', AI, 'did not play 1,', CurrentCard)
+                        for d in played_cards:
+                            hands[AI].append(d)
+                        played_cards = []
+                    else:
+                        print('Penut Butter')
                 else:
                     for card in hands[AI]:
                         if hands[AI].count(card) > 1:
-                            more = True
+                            ammount = hands[AI].count(card)
                             break
-                        else:
-                            more = False
-                    one_or_more = random.randint(1,2)
-                    if one_or_more == 1 or more == False:
-                        card = random.randint(0, len(hands[AI]) - 1)
-                        played_cards.append(hands[AI][card])
-                        del hands[AI][card]
-                        print('House', AI, 'played 1,', CurrentCard)
-                        PlayerCall_BS = input('Do you want to call BS?: ')
-                        while PlayerCall_BS != 'yes' and PlayerCall_BS != 'Yes' and PlayerCall_BS != 'no' and PlayerCall_BS != 'No':
-                            print('Invalid input')
-                            PlayerCall_BS = input('Do you want to call BS?: ')
-                        if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
-                            print('Correct, House', AI, 'did not play 1,', CurrentCard)
-                            for d in played_cards:
-                                hands[AI].append(d)
-                            played_cards = []
-                        else:
-                            print('Penut Butter')
+                    for g in range(ammount):
+                        played_cards.append(card)
+                        hands[AI].remove(card)
+                    print('House', AI, 'played', str(ammount) + ',', str(CurrentCard) + "'s")
+                    PlayerCall_BS = input('Do you want to call BS?: ')
+                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                        print('Correct, House', AI, 'did not play', ammount, ',', str(CurrentCard) + "'s")
+                        for d in played_cards:
+                            hands[AI].append(d)
+                        played_cards = []
                     else:
-                        for card in hands[AI]:
-                            if hands[AI].count(card) > 1:
-                                ammount = hands[AI].count(card)
-                                break
-                        for g in range(ammount):
-                            played_cards.append(card)
-                            hands[AI].remove(card)
-                        print('House', AI, 'played', ammount, ',', str(CurrentCard) + "'s")
-                        PlayerCall_BS = input('Do you want to call BS?: ')
-                        if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
-                            print('Correct, House', AI, 'did not play', ammount, ',', str(CurrentCard) + "'s")
-                            for d in played_cards:
-                                hands[AI].append(d)
-                            played_cards = []
-                        else:
-                            print('Penut Butter')
-                if CurrentCard < 13:
-                    CurrentCard += 1
-                elif CurrentCard == 13:
-                    CurrentCard = 1
-                if len(hands[AI]) == 0:
-                    win = True
-                    break
-            if win != True:
-                for b in range(1,num_AI):
-                    print('House', str(b) , 'has', len(hands[b]), 'cards left')
+                        print('Penut Butter')
+            if CurrentCard < 13:
+                CurrentCard += 1
+            elif CurrentCard == 13:
+                CurrentCard = 1
+            if len(hands[AI]) == 0:
+                win = True
+                break
+        if win != True:
+            for b in range(1,num_AI):
+                print('House', str(b) , 'has', len(hands[b]), 'cards left')
         print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
     Num_Players = int(input('How many players?: '))
     Deal(Num_Players)
@@ -932,10 +933,9 @@ game = input('Select the number of the game you want to play: ')
 while game != '7':
     if game == '1':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
-        if DescriptionYN != 'yes' and DescriptionYN != 'no':
-            while DescriptionYN != 'yes' and DescriptionYN != 'no':
-                print('Invalid input')
-                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        while DescriptionYN != 'yes' and DescriptionYN != 'no':
+            print('Invalid input')
+            DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN == 'yes':
             print('When the "LowRiskSlots" window pops up, click anywhere on it to start the slots machine. Once it finishes, if the number on the screen matches the number next to "Winning Number", you won. After the animation, the window will close automatically and tell you how much you won or lost. If you are in full screen mode, exit and click on the "LowRiskSlots" window.')
         Bet = int(input('Bet: '))
@@ -953,10 +953,9 @@ while game != '7':
             PlayAgainO = input('Do you want to play again?: ')
     elif game == '2':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
-        if DescriptionYN != 'yes' and DescriptionYN != 'no':
-            while DescriptionYN != 'yes' and DescriptionYN != 'no':
-                print('Invalid input')
-                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        while DescriptionYN != 'yes' and DescriptionYN != 'no':
+            print('Invalid input')
+            DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN == 'yes':
             print('When the "HighRiskSlots" window pops up, click anywhere on it to start the slots machine. Once it finishes, if the number on the screen matches the number next to "Winning Number", you won. After the animation, the window will close automatically and tell you how much you won or lost. If you are in full screen mode, exit and click on the "HighRiskSlots" window.')
         Bet = int(input('Bet: '))
@@ -974,10 +973,9 @@ while game != '7':
             PlayAgainT = input('Do you want to play again?: ')
     elif game == '3':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
-        if DescriptionYN != 'yes' and DescriptionYN != 'no':
-            while DescriptionYN != 'yes' and DescriptionYN != 'no':
-                print('Invalid input')
-                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        while DescriptionYN != 'yes' and DescriptionYN != 'no':
+            print('Invalid input')
+            DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN == 'yes':
             print('When you start the game, a dice will roll and return a value from 1-6. If that value is 2-6, it is added to your turn score. Then, it asks you if you want to roll again. If you say yes, the process will repeat. If not, your turn score will be added to your overall score. However, if you choose to roll again and roll a 1, the points from your turn get erased and not added to your overall score.')
         Bet = int(input('Bet: '))
@@ -995,10 +993,9 @@ while game != '7':
             PlayAgainTh = input('Do you want to play again?: ')
     elif game == '4':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
-        if DescriptionYN != 'yes' and DescriptionYN != 'no':
-            while DescriptionYN != 'yes' and DescriptionYN != 'no':
-                print('Invalid input')
-                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        while DescriptionYN != 'yes' and DescriptionYN != 'no':
+            print('Invalid input')
+            DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN == 'yes':
             print('At the start of the game, you will be dealt 2 cards. The total of these to cards will be displayed. After that it will ask you if you want to hit (get another card) or stay (stop getting cards). If you choose to hit, you will be dealt another card and it will be added to your score. If you choose to stay, your total will be compared to the House. If your score is larger than theirs and less than or equal to 21, you win. If your score is less than theirs, you lose. If your score is greater than 21, the House automaticaly wins. If your first 2 cards add up to 21, that is Black Jack and you automatically win')
         Bet = int(input('Bet: '))
@@ -1016,45 +1013,43 @@ while game != '7':
             PlayAgainF = input('Do you want to play again?: ')
     elif game == '5':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
-        if DescriptionYN != 'yes' and DescriptionYN != 'no':
-            while DescriptionYN != 'yes' and DescriptionYN != 'no':
-                print('Invalid input')
-                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        while DescriptionYN != 'yes' and DescriptionYN != 'no':
+            print('Invalid input')
+            DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN == 'yes':
             print('When the game starts, choose if you want to make your own word or select one from a list. If you choose your own word and are in full screen mode, exit and click on the "Hangman Input" window. Once you have entered your word, click anywhere within the window to set it. After that, type your letter guess and then it will tell you if that letter is in the word. You have 7 wrong guesses and once you are out, you lose.') 
         Bet = int(input('Bet: '))
-        Hangman(Bet)
         if (Money - Bet) < 0:
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
+        Hangman(Bet)
         PlayAgainFI = input('Do you want to play again?: ')
         while PlayAgainFI == 'yes':
             Bet = int(input('Bet: '))
-            Hangman(Bet)
             if (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
+            Hangman(Bet)
             PlayAgainFI = input('Do you want to play again?: ')
     elif game == '6':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
-        if DescriptionYN != 'yes' and DescriptionYN != 'no':
-            while DescriptionYN != 'yes' and DescriptionYN != 'no':
-                print('Invalid input')
-                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        while DescriptionYN != 'yes' and DescriptionYN != 'no':
+            print('Invalid input')
+            DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN == 'yes':
             print('When the game starts, you will be asked how many players you want to play with. For example, if I put "4", it would be me and 3 Computers. Then it will start the game. The first play of the game is allways putting down an ace face up so if you have an ace, you will go first but if you do not, one of the computers will go first. Then on your turn it will show you your hand and then tell you what card you are supposed to put down. ones are Aces, elevens are Jacks, twelves are Queens, and thirteens are Kings. It will ask you what card you want to put down and you can either put down the correct card or lie and put down a different card if you do not have the one you need. Then it will ask you how many of the card you want to put down so if you have more than one, you can put them all down together. Then on the computers turn, it will tell you what they played and how many cards they played. Then it will ask you if you want to call BS. By calling BS you are saying that you think they are lying and not putting down the card they are supposed to. If you are right and they are lying, they have to take all of the cards that have been played. If you are wrong and they did play what they were supposed to, you have to take all of the cards. The first person to 0 cards wins.')
         Bet = int(input('Bet: '))
-        BS(Bet)
         if (Money - Bet) < 0:
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
+        BS(Bet)
         PlayAgainFI = input('Do you want to play again?: ')
         while PlayAgainFI == 'yes':
             Bet = int(input('Bet: '))
-            BS(Bet)
             if (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
+            BS(Bet)
             PlayAgainFI = input('Do you want to play again?: ')
     elif game == '8':
         password = input('Security ID: ')
