@@ -668,7 +668,6 @@ def BS(Bet):
                 hand.append(cards[index])
                 del cards[index]
         if len(cards) > 0:
-            print(cards)
             for z in range(52 - ((y + 1) *3)):
                 if len(cards) == 1:
                     hands[z].append(cards[0])
@@ -687,7 +686,7 @@ def BS(Bet):
             sorted_hand.append(min(hand))
             PlayerHand.remove(min(hand))
         PlayerHand = sorted_hand
-    def Player():
+    def Player(diff):
         global CurrentCard
         global lie
         global win
@@ -715,24 +714,29 @@ def BS(Bet):
                 played_cards.append(card)
                 PlayerHand.remove(card)
         Call_BS = random.randint(1,5)
-        if Call_BS == 1 or Call_BS == 5:
-            print('The house called BS on you')
+        if diff == 2:
             if Admin == False:
                 if lie == True:
+                    print('The house called BS on you')
                     for f in played_cards:
                         PlayerHand.append(f)
                     played_cards = []
                     Sort(PlayerHand)
-                else:
-                    pickAI = random.randint(1,3)
-                    for f in played_cards:
-                        hands[pickAI].append(f)
-                    played_cards = []
             else:
-                override = input('Do you want to override the BS: ')
-                if override == 'yes' or override == 'Yes':
-                    pass
-                else:
+                if lie == True:
+                    print('The house called BS on you')
+                    override = input('Override = ').lower()
+                    if override == 'yes':
+                        pass
+                    else:
+                        for f in played_cards:
+                            PlayerHand.append(f)
+                        played_cards = []
+                        Sort(PlayerHand)
+        else:
+            if Call_BS == 1 or Call_BS == 5:
+                print('The house called BS on you')
+                if Admin == False:
                     if lie == True:
                         for f in played_cards:
                             PlayerHand.append(f)
@@ -743,6 +747,21 @@ def BS(Bet):
                         for f in played_cards:
                             hands[pickAI].append(f)
                         played_cards = []
+                else:
+                    override = input('Override = ').lower()
+                    if override == 'yes':
+                        pass
+                    else:
+                        if lie == True:
+                            for f in played_cards:
+                                PlayerHand.append(f)
+                            played_cards = []
+                            Sort(PlayerHand)
+                        else:
+                            pickAI = random.randint(1,3)
+                            for f in played_cards:
+                                hands[pickAI].append(f)
+                            played_cards = []
         if CurrentCard < 13:
             CurrentCard += 1
         elif CurrentCard == 13:
@@ -758,8 +777,8 @@ def BS(Bet):
                 else:
                     win = True
             else:
-                override = input('Do you want to override the BS: ')
-                if override == 'yes' or override == 'Yes':
+                override = input('Override = ').lower()
+                if override == 'yes':
                     win = True
                 else:
                     if lie == True:
@@ -868,6 +887,14 @@ def BS(Bet):
                 print('House', str(b) , 'has', len(hands[b]), 'cards left')
         print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
     Num_Players = int(input('How many players?: '))
+    Difficulty = input('Computer difficulty, easy or hard: ').lower()
+    while Difficulty != 'easy' and Difficulty != 'hard':
+        print('Invalid input')
+        Difficulty = input('Computer diffuculty, easy or hard: ').lower()
+    if Difficulty == 'easy':
+        Difficulty = 1
+    else:
+        Difficulty = 2
     Deal(Num_Players)
     CurrentCard = 1
     win = False
@@ -881,14 +908,17 @@ def BS(Bet):
         while win != True:
             House(num_AI)
             if win != True:
-                Player()
+                Player(Difficulty)
         if len(PlayerHand) == 0:
             print('Player Wins!')
             if Admin == True:
                 Risk = int(input('Risk = '))
                 Money += Risk * int(Bet)
             else:
-                Money += 3 * int(Bet)
+                if Difficulty == 1:
+                    Money += 3 * int(Bet)
+                else:
+                    Money += 10 * int(Bet)
             print('Money:', Money)
         else:
             print('House Wins')
@@ -903,7 +933,7 @@ def BS(Bet):
                 break
         print('The House started the game with 1 Ace')
         while win != True:
-            Player()
+            Player(Difficulty)
             if win != True:
                 House(num_AI)
         if len(PlayerHand) == 0:
@@ -912,7 +942,10 @@ def BS(Bet):
                 Risk = int(input('Risk = '))
                 Money += Risk * int(Bet)
             else:
-                Money += 3 * int(Bet)
+                if Diffuculty == 1:
+                    Money += 3 * int(Bet)
+                else:
+                    Money += 10 * int(Bet)
             print('Money:', Money)
         else:
             print('House Wins')
@@ -924,10 +957,10 @@ Money = 100000
 print('Money: 100000')
 print('1.) Low Risk Slots, Risk: 100x')
 print('2.) High Risk Slots, Risk: 1000x')
-print('3.) Dice, Risk: 2-5x')
+print('3.) Dice, Risk: 1.5-3x')
 print('4.) Black Jack, Risk: 2x or 5x')
 print('5.) Hangman, Risk: 2-4x')
-print('6.) BS, Risk: 3x')
+print('6.) BS, Risk: 3x or 10x')
 print('7.) Exit the Casino')
 game = input('Select the number of the game you want to play: ')
 while game != '7':
@@ -1037,7 +1070,7 @@ while game != '7':
             print('Invalid input')
             DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN == 'yes':
-            print('When the game starts, you will be asked how many players you want to play with. For example, if I put "4", it would be me and 3 Computers. Then it will start the game. The first play of the game is allways putting down an ace face up so if you have an ace, you will go first but if you do not, one of the computers will go first. Then on your turn it will show you your hand and then tell you what card you are supposed to put down. ones are Aces, elevens are Jacks, twelves are Queens, and thirteens are Kings. It will ask you what card you want to put down and you can either put down the correct card or lie and put down a different card if you do not have the one you need. Then it will ask you how many of the card you want to put down so if you have more than one, you can put them all down together. Then on the computers turn, it will tell you what they played and how many cards they played. Then it will ask you if you want to call BS. By calling BS you are saying that you think they are lying and not putting down the card they are supposed to. If you are right and they are lying, they have to take all of the cards that have been played. If you are wrong and they did play what they were supposed to, you have to take all of the cards. The first person to 0 cards wins.')
+            print('When the game starts, you will be asked how many players you want to play with. For example, if I put "4", it would be me and 3 Computers. Finally it will ask you what difficulty you want the computers to be set at. Making them harder will give you a bigger reward if you win. Then it will start the game. The first play of the game is allways putting down an ace face up so if you have an ace, you will go first but if you do not, one of the computers will go first. Then on your turn it will show you your hand and then tell you what card you are supposed to put down. ones are Aces, elevens are Jacks, twelves are Queens, and thirteens are Kings. It will ask you what card you want to put down and you can either put down the correct card or lie and put down a different card if you do not have the one you need. Then it will ask you how many of the card you want to put down so if you have more than one, you can put them all down together. Then on the computers turn, it will tell you what they played and how many cards they played. Then it will ask you if you want to call BS. By calling BS you are saying that you think they are lying and not putting down the card they are supposed to. If you are right and they are lying, they have to take all of the cards that have been played. If you are wrong and they did play what they were supposed to, you have to take all of the cards. The first person to 0 cards wins.')
         Bet = int(input('Bet: '))
         if (Money - Bet) < 0:
             print('Insuficient Funds')
@@ -1069,10 +1102,10 @@ while game != '7':
     if game != '7':
         print('1.) Low Risk Slots, Risk: 100x')
         print('2.) High Risk Slots, Risk: 1000x')
-        print('3.) Dice, Risk: 2-5x')
+        print('3.) Dice, Risk: 1.5-3x')
         print('4.) Black Jack, Risk: 2x or 5x')
         print('5.) Hangman, Risk: 2-4x')
-        print('6.) BS, Risk: 3x')
+        print('6.) BS, Risk: 3x or 10x')
         print('7.) Exit the Casino')
         game = input('Select the number of the game you want to play: ')
     else:
