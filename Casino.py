@@ -414,29 +414,8 @@ def LowRiskSlots(Bet):
         print('Money: ', Money)
 def Hangman(Bet):
     global Money
-    if int(Bet) < 200:
-        print('Sorry th minimum bet for this game is 200')
-        while int(Bet) < 200:
-            Bet = input('Bet: ')
-    if int(Bet) > 1000:
-        print('Sorry th maximum bet for this game is 1000')
-        while int(Bet) > 1000:
-            Bet = input('Bet: ')
-    inputt = input('Do you want to create your own word or select one from a predetermined list? If you choose your own word, you will get a bigger reward. (own/predetermined): ')
-    if inputt == 'own':
-        print('If your word is over 11 letters, you will get a bonus.')
-        print('If you are in full screen, exit and click on the "Hangman Input" window')
-        time.sleep(1)
-        win = GraphWin("Hangman Input", 500, 500)
-        textEntry = Entry(Point(250,250),20)
-        textEntry.draw(win)
-        exitText = Text(Point(250,350), 'Click anywhere to set word')
-        exitText.setSize(40)
-        exitText.draw(win)
-        win.getMouse()
-        word = textEntry.getText()
-        word = word.lower()
-        win.close()
+    def Hangman_Processing(word):
+        global Money
         letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
         Letters = len(word)
         ShowWord = '_' * Letters
@@ -513,6 +492,30 @@ def Hangman(Bet):
             print('The word was:', word)
             Money -= Bet
             print('Money:',Money)
+    if int(Bet) < 200:
+        print('Sorry th minimum bet for this game is 200')
+        while int(Bet) < 200:
+            Bet = input('Bet: ')
+    if int(Bet) > 1000:
+        print('Sorry th maximum bet for this game is 1000')
+        while int(Bet) > 1000:
+            Bet = input('Bet: ')
+    inputt = input('Do you want to create your own word or select one from a predetermined list? If you choose your own word, you will get a bigger reward. (own/predetermined): ')
+    if inputt == 'own':
+        print('If your word is over 11 letters, you will get a bonus.')
+        print('If you are in full screen, exit and click on the "Hangman Input" window')
+        time.sleep(1)
+        win = GraphWin("Hangman Input", 500, 500)
+        textEntry = Entry(Point(250,250),20)
+        textEntry.draw(win)
+        exitText = Text(Point(250,350), 'Click anywhere to set word')
+        exitText.setSize(40)
+        exitText.draw(win)
+        win.getMouse()
+        word = textEntry.getText()
+        word = word.lower()
+        win.close()
+        Hangman_Processing(word)
     else:
         Word_1 = 'pumpkin'
         Word_2 = 'racecar'
@@ -600,76 +603,7 @@ def Hangman(Bet):
             word = Word_26
         elif number == 'challenge':
             word = Word_27
-        Letters = len(word)
-        ShowWord = '_' * Letters
-        if Admin == False:
-            print(ShowWord)
-        else:
-            print(word)
-            print(ShowWord)
-        guess = ''
-        NOG = 0
-        guessed = []
-        while guess != word and NOG <= 6:
-            if ShowWord == word:
-                print('YOU GUESSED THE WORD!!!!')
-                Money += 2 * int(Bet)
-                print('Money:',Money)
-                break
-            guess = input('Guess a letter, guess the word if you know it: ').lower()
-            while guess not in letters and guess != word:
-                guess = input('That is not a valid letter. Choose again: ').lower()
-            while guess in guessed:
-                guess = input('You already guessed that letter. Choose again: ').lower()
-            if guess == word:
-                print('YOU GUESSED THE WORD!!!!!')
-                Money += 2 * int(Bet)
-                print('Money:',Money)
-            else:
-                if word.count(guess) > 1:
-                    location = []
-                    a = []
-                    x = 0
-                    y = 0
-                    z = -1
-                    while x < word.count(guess):
-                        z = word.find(guess, z+1)
-                        location.append(z)
-                        x += 1
-                    for x in range(len(word)):
-                        a.append(ShowWord[x])
-                    while y < word.count(guess):
-                        a[location[y]] = guess
-                        y += 1
-                    ShowWord = ''.join(a)
-                    print('There are', word.count(guess), guess, "'s in the word")
-                    guessed.append(guess)
-                elif word.count(guess) == 1:
-                    a = []
-                    location = word.find(guess)
-                    for x in range(len(word)):
-                        a.append(ShowWord[x])
-                    a[location] = guess
-                    ShowWord = ''.join(a)
-                    print('There is 1', guess, 'In the word')
-                    guessed.append(guess)
-                else:
-                    print('That letter is not in the word')
-                    guessed.append(guess)
-                    NOG += 1
-                    print('Guesses remaining:', 7 - NOG)
-                if Admin == True:
-                    print('Word:', word)
-                print(ShowWord)
-                if ShowWord != word:
-                    print('Guessed Letters:')
-                    for x in guessed:
-                        print(' -', x)
-        if NOG == 7:
-            print('You are out of guesses')
-            print('The word was:', word)
-            Money -= Bet
-            print('Money:',Money)
+        Hangman_Processing(word)
 global Admin
 Admin = False
 Money = 100000
