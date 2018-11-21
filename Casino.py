@@ -644,6 +644,261 @@ def Hangman(Bet):
         elif number == 'challenge':
             word = Word_27
         Hangman_Processing(word)
+def BS(Bet):
+    global CurrentCard
+    global played_cards
+    global win
+    if Admin == False:
+        if int(Bet) < 1000:
+            print('Sorry, the minimum bet for this game is 1000')
+            while int(Bet) < 1000:
+                Bet = input('Bet: ')
+    def Deal(num_players):
+        global hands
+        global PlayerHand
+        global num_AI
+        cards = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12,13,13,13,13]
+        hands = []
+        for x in range(num_players):
+            hands.append([])
+        for hand in hands:
+            for y in range(52 // num_players):
+                index = random.randint(0, len(cards) - 1)
+                hand.append(cards[index])
+                del cards[index]
+        if len(cards) > 0:
+            for z in range(52 - ((y + 1) *3)):
+                if len(cards) == 1:
+                    hands[z].append(cards[0])
+                elif len(cards) > 1:
+                    index = random.randint(0, len(cards) - 1)
+                    hands[z].append(cards[index])
+                    del cards[index]
+        PlayerHand = hands[0]
+        Sort(PlayerHand)
+        num_AI = num_players
+    def Sort(hand):
+        global PlayerHand
+        sorted_hand = []
+        for x in range(len(hand)):
+            sorted_hand.append(min(hand))
+            PlayerHand.remove(min(hand))
+        PlayerHand = sorted_hand
+    def Player():
+        global CurrentCard
+        global lie
+        global win
+        global played_cards
+        global PlayerHand
+        lie = False
+        print('Players Turn')
+        print('Hand:', PlayerHand)
+        print('You are', str(CurrentCard) + "'s")
+        card = int(input('Card: '))
+        while card not in PlayerHand:
+            print('That card is not in your hand')
+            card = int(input('Card: '))
+        if card != CurrentCard:
+            lie = True
+        ammount = int(input('How many: '))
+        while PlayerHand.count(card) < ammount or ammount < 1:
+            print("Invalid input")
+            ammount = int(input('How many: '))
+        if ammount == 1:
+            played_cards.append(card)
+            PlayerHand.remove(card)
+        else:
+            for c in range(ammount):
+                played_cards.append(card)
+                PlayerHand.remove(card)
+        Call_BS = random.randint(1,5)
+        if Call_BS == 1 or Call_BS == 5:
+            print('The house called BS on you')
+            if Admin == False:
+                if lie == True:
+                    for f in played_cards:
+                        PlayerHand.append(f)
+                    played_cards = []
+                else:
+                    pickAI = random.randint(1,3)
+                    for f in played_cards:
+                        hands[pickAI].append(f)
+                    played_cards = []
+            else:
+                override = input('Do you want to override the BS: ')
+                if override == 'yes' or override == 'Yes':
+                    pass
+                else:
+                    if lie == True:
+                        for f in played_cards:
+                            PlayerHand.append(f)
+                            played_cards = []
+                    else:
+                        pickAI = random.randint(1,3)
+                        for f in played_cards:
+                            hands[pickAI].append(f)
+                        played_cards = []
+        if CurrentCard < 13:
+            CurrentCard += 1
+        elif CurrentCard == 13:
+            CurrentCard = 1
+        if len(PlayerHand) == 0:
+            if Admin == False:
+                if lie == True:
+                    for f in played_cards:
+                        PlayerHand.append(f)
+                    played_cards = []
+                else:
+                    win = True
+            else:
+                override = input('Do you want to override the BS: ')
+                if override == 'yes' or override == 'Yes':
+                    win = True
+                else:
+                    if lie == True:
+                        for f in played_cards:
+                            PlayerHand.append(f)
+                            played_cards = []
+                    else:
+                        win = True
+        if win != True:
+            print('Hand:', PlayerHand)
+        print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+    def House(num_AI):
+        global PlayerHand
+        global lie
+        global win
+        global CurrentCard
+        global played_cards
+        global hands
+        for AI in range(1, num_AI):
+            if Admin == True:
+                print(hands[AI])
+            if CurrentCard in hands[AI]:
+                if hands[AI].count(CurrentCard) == 1:
+                    played_cards.append(CurrentCard)
+                    hands[AI].remove(CurrentCard)
+                    print('House', AI, 'played 1,', CurrentCard)
+                    PlayerCall_BS = input('Do you want to call BS?: ')
+                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                        print('House', AI, 'did play 1,', CurrentCard)
+                        for d in played_cards:
+                            PlayerHand.append(d)                                                                                                    
+                        Sort(PlayerHand)
+                        played_cards = []
+                        print('Your hand:', PlayerHand)
+                elif hands[AI].count(CurrentCard) > 1:
+                    print('House', AI, 'played', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
+                    PlayerCall_BS = input('Do you want to call BS?: ')
+                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                        print('House', AI, 'did play', str(hands[AI].count(CurrentCard)) + ',', str(CurrentCard) + "'s")
+                        for d in played_cards:
+                            PlayerHand.append(d)
+                        Sort(PlayerHand)
+                        played_cards = []
+                        print('Your hand:', PlayerHand)
+                    for e in range(hands[AI].count(CurrentCard)):
+                            played_cards.append(CurrentCard)
+                            hands[AI].remove(CurrentCard)
+                    
+            else:
+                for card in hands[AI]:
+                    if hands[AI].count(card) > 1:
+                        more = True
+                        break
+                    else:
+                        more = False
+                one_or_more = random.randint(1,2)
+                if one_or_more == 1 or more == False:
+                    card = random.randint(0, len(hands[AI]) - 1)
+                    played_cards.append(hands[AI][card])
+                    del hands[AI][card]
+                    print('House', AI, 'played 1,', CurrentCard)
+                    PlayerCall_BS = input('Do you want to call BS?: ')
+                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                        print('Correct, House', AI, 'did not play 1,', CurrentCard)
+                        for d in played_cards:
+                            hands[AI].append(d)
+                        played_cards = []
+                    else:
+                        print('Penut Butter')
+                else:
+                    for card in hands[AI]:
+                        if hands[AI].count(card) > 1:
+                            ammount = hands[AI].count(card)
+                            break
+                    for g in range(ammount):
+                        played_cards.append(card)
+                        hands[AI].remove(card)
+                    print('House', AI, 'played', ammount, ',', str(CurrentCard) + "'s")
+                    PlayerCall_BS = input('Do you want to call BS?: ')
+                    if PlayerCall_BS == 'yes' or PlayerCall_BS == 'Yes':
+                        print('Correct, House', AI, 'did not play', ammonut, ',', str(CurrentCard) + "'s")
+                        for d in played_cards:
+                            hands[AI].append(d)
+                        played_cards = []
+                    else:
+                        print('Penut Butter')
+            if CurrentCard < 13:
+                CurrentCard += 1
+            elif CurrentCard == 13:
+                CurrentCard = 1
+        for b in range(1,num_AI):
+            print('House', str(b) , 'has', len(hands[b]), 'cards left')
+        if len(hands[AI]) == 0:
+            win == True
+        print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+    Num_Players = int(input('How many players?: '))
+    Deal(Num_Players)
+    CurrentCard = 1
+    win = False
+    played_cards = []
+    if 1 in PlayerHand:
+        turn = 'player'
+        print('You started the game with 1 Ace')
+        PlayerHand.remove(1)
+        print('Hand:', PlayerHand)
+        CurrentCard = 2
+        while win != True:
+            House(num_AI)
+            if win != True:
+                Player()
+        if len(PlayerHand) == 0:
+            print('Player Wins!')
+            if Admin == True:
+                Risk = int(input('Risk = '))
+                Money += Risk * int(Bet)
+            else:
+                Money += 3 * int(Bet)
+            print('Money:', Money)
+        else:
+            print('House Wins')
+            Money -= int(Bet)
+            print('Money:', Money)
+    else:
+        for AI in range(1, num_AI):
+            if 1 in hands[AI]:
+                hands[AI].remove(1)
+                CurrentCard = 2
+                turn = AI
+                break
+        print('The House started the game with 1 Ace')
+        while win != True:
+            Player()
+            if win != True:
+                House(num_AI)
+        if len(PlayerHand) == 0:
+            print('Player Wins!')
+            if Admin == True:
+                Risk = int(input('Risk = '))
+                Money += Risk * int(Bet)
+            else:
+                Money += 3 * int(Bet)
+            print('Money:', Money)
+        else:
+            print('House Wins')
+            Money -= int(Bet)
+            print('Money:', Money)
 global Admin
 Admin = False
 Money = 100000
@@ -653,9 +908,10 @@ print('2.) High Risk Slots, Risk: 1000x')
 print('3.) Dice, Risk: 2-5x')
 print('4.) Black Jack, Risk: 2x or 5x')
 print('5.) Hangman, Risk: 2-4x')
-print('6.) Exit the Casino')
+print('6.) BS, Risk: 3x')
+print('7.) Exit the Casino')
 game = input('Select the number of the game you want to play: ')
-while game != '6':
+while game != '7':
     if game == '1':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
         if DescriptionYN != 'yes' and DescriptionYN != 'no':
@@ -761,7 +1017,28 @@ while game != '6':
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             PlayAgainFI = input('Do you want to play again?: ')
-    elif game == '7':
+    elif game == '6':
+        DescriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN != 'yes' and DescriptionYN != 'no':
+            while DescriptionYN != 'yes' and DescriptionYN != 'no':
+                print('Invalid input')
+                DesecriptionYN = input('Do you want a description of this game?: ').lower()
+        if DescriptionYN == 'yes':
+            print('')
+        Bet = int(input('Bet: '))
+        BS(Bet)
+        if (Money - Bet) < 0:
+            print('Insuficient Funds')
+            Bet = int(input('Bet: '))
+        PlayAgainFI = input('Do you want to play again?: ')
+        while PlayAgainFI == 'yes':
+            Bet = int(input('Bet: '))
+            BS(Bet)
+            if (Money - Bet) < 0:
+                print('Insuficient Funds')
+                Bet = int(input('Bet: '))
+            PlayAgainFI = input('Do you want to play again?: ')
+    elif game == '8':
         password = input('Security ID: ')
         if password == '699':
             Admin = True
@@ -775,18 +1052,19 @@ while game != '6':
             else:
                 Money = 0
                 print('Money:', Money)
-                game = '6'
-    if game != '6':
+                game = '7'
+    if game != '7':
         print('1.) Low Risk Slots, Risk: 100x')
         print('2.) High Risk Slots, Risk: 1000x')
         print('3.) Dice, Risk: 2-5x')
         print('4.) Black Jack, Risk: 2x or 5x')
         print('5.) Hangman, Risk: 2-4x')
-        print('6.) Exit the Casino')
+        print('6.) BS, Risk: 3x')
+        print('7.) Exit the Casino')
         game = input('Select the number of the game you want to play: ')
     else:
         pass
 if Money < 100000:
     print('Losings:', 100000 - Money)
 elif Money > 100000:
-    print('Earnings:', Money - 100000) 
+    print('Earnings:', Money - 100000)
