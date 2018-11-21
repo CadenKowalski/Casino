@@ -9,64 +9,37 @@ def Dice(Bet):
     def Player():
         global win
         global PlayerTotal
-        if Admin == True:
-            hold = 'yes'
-            turnScore = 0
-            CurrentRoll = 0
-            while hold == 'yes' and PlayerTotal + turnScore < 100:
+        hold = 'yes'
+        turnScore = 0
+        CurrentRoll = 0
+        while hold == 'yes' and PlayerTotal + turnScore < 100:
+            if Admin == True:
                 CurrentRoll = int(input('CurrentRoll = '))
-                if CurrentRoll == 1:
-                    print('Player rolled a: 1')
-                    hold = 'no'
-                else:
-                    turnScore += CurrentRoll
-                    print('Player rolled a:', CurrentRoll)
-                    print('Player Turn Score:', turnScore)
-                    hold = input('Do you want to roll again?: ').lower()
-                    if hold != 'yes' and hold != 'no':
-                        while hold != 'yes' and hold != 'no':
-                            print('Invalid input')
-                            hold = input('Do you want to roll again?: ').lower()
-            if hold == 'no' and CurrentRoll != 1:
-                PlayerTotal += turnScore
-                print('Player Total:', PlayerTotal)
-                print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
-                turnScore = 0
-            elif hold == 'no' and CurrentRoll == 1:
-                turnScore == 0
-                print('Player Total:', PlayerTotal)
-                print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
-            if PlayerTotal + turnScore >= 100:
-                win = True
-        else:
-            hold = 'yes'
-            turnScore = 0
-            CurrentRoll = 0
-            while hold == 'yes' and PlayerTotal + turnScore < 100:
+            else:
                 CurrentRoll = random.randint(1,6)
-                if CurrentRoll == 1:
-                    print('Player rolled a: 1')
-                    hold = 'no'
-                else:
-                    turnScore += CurrentRoll
-                    print('Player rolled a:', CurrentRoll)
-                    print('Player Turn Score:', turnScore)
-                    hold = input('Do you want to roll again?: ').lower()
-                    if hold != 'yes' and hold != 'no':
-                        while hold != 'yes' and hold != 'no':
-                            print('Invalid input')
-                            hold = input('Do you want to roll again?: ').lower()
-            if hold == 'no' and CurrentRoll != 1:
-                PlayerTotal += turnScore
-                print('Player Total:', PlayerTotal)
-                print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
-                turnScore = 0
-            elif hold == 'no' and CurrentRoll == 1:
-                turnScore == 0
-                print('Player Total:', PlayerTotal)
-                print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
-            if PlayerTotal + turnScore >= 100:
-                win = True
+            if CurrentRoll == 1:
+                print('Player rolled a: 1')
+                hold = 'no'
+            else:
+                turnScore += CurrentRoll
+                print('Player rolled a:', CurrentRoll)
+                print('Player Turn Score:', turnScore)
+                hold = input('Do you want to roll again?: ').lower()
+                if hold != 'yes' and hold != 'no':
+                    while hold != 'yes' and hold != 'no':
+                        print('Invalid input')
+                        hold = input('Do you want to roll again?: ').lower()
+        if hold == 'no' and CurrentRoll != 1:
+            PlayerTotal += turnScore
+            print('Player Total:', PlayerTotal)
+            print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+            turnScore = 0
+        elif hold == 'no' and CurrentRoll == 1:
+            turnScore == 0
+            print('Player Total:', PlayerTotal)
+            print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+        if PlayerTotal + turnScore >= 100:
+            win = True
     def House():
         global HouseTotal
         global win
@@ -96,19 +69,34 @@ def Dice(Bet):
             print('House Total:', HouseTotal)
             print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
             win = True
-    if Admin ==True:
+    if Admin == True:
         HouseTotal = int(input('House Total = '))
         PlayerTotal = int(input('Player Total = '))
-        win = False
-        while win != True:
-            Player()
-            if win != True:
-                House()
-        maximumC = HouseTotal
-        maximumP = PlayerTotal
-        if maximumC > maximumP:
-            print('House Wins!')
-            Money -= int(Bet)
+    else:
+        HouseTotal = 0
+        PlayerTotal = 0
+    win = False
+    while win != True:
+        Player()
+        if win != True:
+            House()
+    maximumC = HouseTotal
+    maximumP = PlayerTotal
+    if maximumC > maximumP:
+        print('House Wins!')
+        Money -= int(Bet)
+        print('Money:', Money)
+    else:
+        if Admin == False:
+            print('Player Wins!')
+            if maximumP - 10 <= maximumC:
+                Money += int((1.5 * int(Bet)))
+            elif maximumP - 20 <= maximumC:
+                Money += (2 * int(Bet))
+            elif maximumP - 30 <= maximumC:
+                Money += int((2.5 * int(Bet)))
+            else:
+                Money += (3 * int(Bet))
             print('Money:', Money)
         else:
             print('Player Wins!')
@@ -129,31 +117,6 @@ def Dice(Bet):
             elif scoring == 'custom':
                 Risk = int(input('Risk: '))
                 Money += (Risk * int(Bet))
-            print('Money:', Money)
-    else:
-        HouseTotal = 0
-        PlayerTotal = 0
-        win = False
-        while win != True:
-            Player()
-            if win != True:
-                House()
-        maximumC = HouseTotal
-        maximumP = PlayerTotal
-        if maximumC > maximumP:
-            print('House Wins!')
-            Money -= int(Bet)
-            print('Money:', Money)
-        else:
-            print('Player Wins!')
-            if maximumP - 10 <= maximumC:
-                Money += int((1.5 * int(Bet)))
-            elif maximumP - 20 <= maximumC:
-                Money += (2 * int(Bet))
-            elif maximumP - 30 <= maximumC:
-                Money += int((2.5 * int(Bet)))
-            else:
-                Money += (3 * int(Bet))
             print('Money:', Money)
 
 def BlackJack(Bet):
@@ -223,138 +186,77 @@ def BlackJack(Bet):
                 Card1 = 1
                 PlayerTotal += Card1
             PlayerTotal += Card2
-            if Card1 + Card2 == 21:
-                print('Black Jack')
-                Money += 5 * int(Bet)
-                print('Money:',Money)
-            else:
-                if Card1 == 1:
-                    print('Your first card is a 1')
-                if Card1 == 11:
-                    print('Your first card is an Ace')
-                if Card1 != 1 and Card1 != 11:
-                    print('Your first card is a',Card1)
-                if Card2 == 1:
-                    print('Your second card is a 1')
-                    print('Your total is',PlayerTotal)
-                    print("The House's face up total is",(HouseTotal - CTotal))
-                if Card2 == 11:
-                    print('Your second card is an Ace')
-                    print('Your total is',PlayerTotal)
-                    print("The House's face up total is",(HouseTotal - CTotal))
-                if Card2 != 1 and Card2 != 11:
-                    print('Your second card is a',Card2)
-                    print('Your total is',PlayerTotal)
-                    print("The House's face up total is a",(HouseTotal - CTotal)) 
-                HitStay = input('Do you want to hit or stay?: ').lower()
-                if HitStay != 'hit' and HitStay != 'stay':
-                    while HitStay != 'hit' and HitStay != 'stay':
-                        print('Invalid input')
-                        HitStay = input('Do you want to hit or stay: ').lower()
-                while HitStay == 'hit' and PlayerTotal <= 21:
-                    Card = random.randint(1,14)
-                    if Card == 11 or Card == 12 or Card == 13:
-                        Card = 10
-                    elif Card == 1 or Card == 14:
-                        if PlayerTotal + 11 < 21:
-                            Card = 11
-                        else:
-                            Card = 1
-                    PlayerTotal += Card
-                    print('Your Card is a',Card)
-                    print('Your total is',PlayerTotal)
-                    print("The House's Face up total is",(HouseTotal - CTotal))
-                    if PlayerTotal <= 21:
-                        HitStay = input('Do you want to hit or stay?: ').lower()
-                        if HitStay != 'hit' and HitStay != 'stay':
-                            while HitStay != 'hit' and HitStay != 'stay':
-                                print('Invalid input')
-                                HitStay = input('Do you want to hit or stay: ').lower()
-                if PlayerTotal > 21:
-                    print('Bust')
-                    Money -= int(Bet)
-                elif HouseTotal > 21:
-                    print('you win. The House had a bust')
-                    Money += (2 * int(Bet))
-                elif PlayerTotal > HouseTotal:
-                    print('You win. The House had',HouseTotal)
-                    Money += (2 * int(Bet))
-                elif HouseTotal > PlayerTotal:
-                    print('You lose. The House had',HouseTotal)
-                    Money -= int(Bet)
-                elif PlayerTotal == HouseTotal:
-                    print('You tied with the House')
-                print('Money:',Money)
-        elif Admin == True:
+        else:
             PlayerTotal = 0
             Card1 = int(input('Card1 = '))
             Card2 = int(input('Card2 = '))
             PlayerTotal += Card1
             PlayerTotal += Card2
-            if Card1 + Card2 == 21:
-                print('Black Jack')
-                Money += 5 * int(Bet)
-                print('Money:',Money)
-            else:
-                if Card1 == 1:
-                    print('Your first card is a 1')
-                if Card1 == 11:
-                    print('Your first card is an Ace')
-                if Card1 != 1 and Card1 != 11:
-                    print('Your first card is a',Card1)
-                if Card2 == 1:
-                    print('Your second card is a 1')
-                    print('Your total is',PlayerTotal)
-                    print("The House's face up total is",(HouseTotal - CTotal))
-                if Card2 == 11:
-                    print('Your second card is an Ace')
-                    print('Your total is',PlayerTotal)
-                    print("The House's face up total is",(HouseTotal - CTotal))
-                if Card2 != 1 and Card2 != 11:
-                    print('Your second card is a',Card2)
-                    print('Your total is',PlayerTotal)
-                    print("The House's face up total is a",(HouseTotal - CTotal)) 
-                HitStay = input('Do you want to hit or stay?: ').lower()
-                if HitStay != 'hit' and HitStay != 'stay':
-                    while HitStay != 'hit' and HitStay != 'stay':
-                        print('Invalid input')
-                        HitStay = input('Do you want to hit or stay: ').lower()
-                while HitStay == 'hit' and PlayerTotal <= 21:
+        if Card1 + Card2 == 21:
+            print('Black Jack')
+            Money += 5 * int(Bet)
+            print('Money:',Money)
+        else:
+            if Card1 == 1:
+                print('Your first card is a 1')
+            if Card1 == 11:
+                print('Your first card is an Ace')
+            if Card1 != 1 and Card1 != 11:
+                print('Your first card is a',Card1)
+            if Card2 == 1:
+                print('Your second card is a 1')
+                print('Your total is',PlayerTotal)
+                print("The House's face up total is",(HouseTotal - CTotal))
+            if Card2 == 11:
+                print('Your second card is an Ace')
+                print('Your total is',PlayerTotal)
+                print("The House's face up total is",(HouseTotal - CTotal))
+            if Card2 != 1 and Card2 != 11:
+                print('Your second card is a',Card2)
+                print('Your total is',PlayerTotal)
+                print("The House's face up total is a",(HouseTotal - CTotal)) 
+            HitStay = input('Do you want to hit or stay?: ').lower()
+            if HitStay != 'hit' and HitStay != 'stay':
+                while HitStay != 'hit' and HitStay != 'stay':
+                    print('Invalid input')
+                    HitStay = input('Do you want to hit or stay: ').lower()
+            while HitStay == 'hit' and PlayerTotal <= 21:
+                if Admin == False: 
+                    Card = random.randint(1,14)
+                else:
                     Card = int(input('Card = '))
-                    if Card == 11 or Card == 12 or Card == 13:
-                        Card = 10
-                    elif Card == 1 or Card == 14:
-                        if PlayerTotal + 11 < 21:
-                            Card = 11
-                        else:
-                            Card = 1
-                    PlayerTotal += Card
-                    print('Your Card is a',Card)
-                    print('Your total is',PlayerTotal)
-                    print("The House's Face up total is",(HouseTotal - CTotal))
-                    if PlayerTotal <= 21:
-                        HitStay = input('Do you want to hit or stay?: ').lower()
-                        if HitStay != 'hit' and HitStay != 'stay':
-                            while HitStay != 'hit' and HitStay != 'stay':
-                                print('Invalid input')
-                                HitStay = input('Do you want to hit or stay: ').lower()
-                if PlayerTotal > 21:
-                    print('Bust')
-                    Money -= int(Bet)
-                elif HouseTotal > 21:
-                    print('you win. The House had a bust')
-                    Risk = int(input('Risk: '))
-                    Money += (Risk * int(Bet))
-                elif PlayerTotal > HouseTotal:
-                    print('You win. The House had',HouseTotal)
-                    Risk = int(input('Risk: '))
-                    Money += (Risk * int(Bet))
-                elif HouseTotal > PlayerTotal:
-                    print('You lose. The House had',HouseTotal)
-                    Money -= int(Bet)
-                elif PlayerTotal == HouseTotal:
-                    print('You tied with the House')
-                print('Money:',Money)
+                if Card == 11 or Card == 12 or Card == 13:
+                    Card = 10
+                elif Card == 1 or Card == 14:
+                    if PlayerTotal + 11 < 21:
+                        Card = 11
+                    else:
+                        Card = 1
+                PlayerTotal += Card
+                print('Your Card is a',Card)
+                print('Your total is',PlayerTotal)
+                print("The House's Face up total is",(HouseTotal - CTotal))
+                if PlayerTotal <= 21:
+                    HitStay = input('Do you want to hit or stay?: ').lower()
+                    if HitStay != 'hit' and HitStay != 'stay':
+                        while HitStay != 'hit' and HitStay != 'stay':
+                            print('Invalid input')
+                            HitStay = input('Do you want to hit or stay: ').lower()
+            if PlayerTotal > 21:
+                print('Bust')
+                Money -= int(Bet)
+            elif HouseTotal > 21:
+                print('you win. The House had a bust')
+                Money += (2 * int(Bet))
+            elif PlayerTotal > HouseTotal:
+                print('You win. The House had',HouseTotal)
+                Money += (2 * int(Bet))
+            elif HouseTotal > PlayerTotal:
+                print('You lose. The House had',HouseTotal)
+                Money -= int(Bet)
+            elif PlayerTotal == HouseTotal:
+                print('You tied with the House')
+            print('Money:',Money)
     House()
     Player(Bet)
 def HighRiskSlots(Bet):
@@ -424,159 +326,92 @@ def LowRiskSlots(Bet):
             print('Sorry, the maximum bet for this game is 1000')
             while int(Bet) > 1000:
                     Bet = input('Bet: ')
-        GUI = GraphWin('LowRiskSlots',650,650)
-        GUI.setBackground('Black')
+    print('If you are in full screen mode, exit and click on the "LowRiskSlots" window.')
+    GUI = GraphWin('LowRiskSlots',650,650)
+    GUI.setBackground('Black')
+    if Admin == False:
         n = random.randint(1,100)
         Winning_number = random.randint(1,100)
-        a = Text(Point(325,325),'Press Anywhere To Start')
-        a.setTextColor('Red')
-        a.setSize(40)
-        a.draw(GUI)
-        GUI.getMouse()
-        a.undraw()
-        wns_one = random.randint(1,9)
-        wns_two = random.randint(1,9)
-        wnt = Text(Point(280,550), 'The winning number is: ')
-        wnt.setSize(40)
-        wnt.setTextColor('Red')
-        wnt.draw(GUI)
-        wn = Text(Point(510,550), Winning_number)
-        wn.setSize(40)
-        wn.setTextColor('Red')
-        wn.draw(GUI)
-        for numbers in range(7):
-            for number in range(9):
-                a = Text(Point(175,325),number)
-                b = Text(Point(475,325),abs(number-9))
-                a.setSize(300)
-                a.setTextColor('Red')
-                b.setSize(300)
-                b.setTextColor('Red')
-                a.draw(GUI)
-                b.draw(GUI)
-                time.sleep(.01)
-                a.undraw()
-                b.undraw()
-        if n == Winning_number:
-            show_number = Text(Point(325,325), Winninhg_number)
-            show_number.setSize(300)
-            show_number.setTextColor('Red')
-            show_number.draw(GUI)
-            time.sleep(1)
-            show_number.undraw()
-            wn.undraw()
-            wnt.undraw()
-            Money += 5 * int(Bet)
-            a = Text(Point(325,325),'You Win!')
-            a.setSize(100)
-            a.setTextColor('Red')
-            a.draw(GUI)
-            for x in range(2):
-                GUI.setBackground('LimeGreen')
-                time.sleep(.5)
-                GUI.setBackground('Black')
-                time.sleep(.5)
-            GUI.close()
-            print('Money: ', Money)
-        else:
-            show_number = Text(Point(325,325), n)
-            show_number.setSize(300)
-            show_number.setTextColor('Red')
-            show_number.draw(GUI)
-            time.sleep(1)
-            show_number.undraw()
-            wn.undraw()
-            wnt.undraw()
-            Money -= int(Bet)
-            a = Text(Point(325,325),'You Lose')
-            a.setSize(100)
-            a.setTextColor('LimeGreen')
-            a.draw(GUI)
-            for x in range(2):
-                GUI.setBackground('Red')
-                time.sleep(.5)
-                GUI.setBackground('Black')
-                time.sleep(.5)
-            GUI.close()
-            print('Money: ', Money)
-    elif Admin == True:
-        print('If you are in full screen mode, exit and click on the "LowRiskSlots" window.')
-        GUI = GraphWin('LowRiskSlots',650,650)
-        GUI.setBackground('Black')
+    else:
         Winning_number = int(input('Winning Number = '))
         n = int(input('Number = '))
-        a = Text(Point(325,325),'Press Anywhere To Start')
-        a.setTextColor('Red')
-        a.setSize(40)
-        a.draw(GUI)
-        GUI.getMouse()
-        a.undraw()
-        wns_one = random.randint(1,9)
-        wns_two = random.randint(1,9)
-        wnt = Text(Point(280,550), 'The winning number is: ')
-        wnt.setSize(40)
-        wnt.setTextColor('Red')
-        wnt.draw(GUI)
-        wn = Text(Point(510,550), Winning_number)
-        wn.setSize(40)
-        wn.setTextColor('Red')
-        wn.draw(GUI)
-        for numbers in range(7):
-            for number in range(9):
-                a = Text(Point(175,325),number)
-                b = Text(Point(475,325),abs(number-9))
-                a.setSize(300)
-                a.setTextColor('Red')
-                b.setSize(300)
-                b.setTextColor('Red')
-                a.draw(GUI)
-                b.draw(GUI)
-                time.sleep(.01)
-                a.undraw()
-                b.undraw()
-        if n == Winning_number:
-            show_number = Text(Point(325,325), Winning_number)
-            show_number.setSize(300)
-            show_number.setTextColor('Red')
-            show_number.draw(GUI)
-            time.sleep(1)
-            show_number.undraw()
-            wn.undraw()
-            wnt.undraw()
-            a = Text(Point(325,325),'You Win!')
-            a.setSize(100)
+    a = Text(Point(325,325),'Press Anywhere To Start')
+    a.setTextColor('Red')
+    a.setSize(40)
+    a.draw(GUI)
+    GUI.getMouse()
+    a.undraw()
+    wns_one = random.randint(1,9)
+    wns_two = random.randint(1,9)
+    wnt = Text(Point(280,550), 'The winning number is: ')
+    wnt.setSize(40)
+    wnt.setTextColor('Red')
+    wnt.draw(GUI)
+    wn = Text(Point(510,550), Winning_number)
+    wn.setSize(40)
+    wn.setTextColor('Red')
+    wn.draw(GUI)
+    for numbers in range(7):
+        for number in range(9):
+            a = Text(Point(175,325),number)
+            b = Text(Point(475,325),abs(number-9))
+            a.setSize(300)
             a.setTextColor('Red')
+            b.setSize(300)
+            b.setTextColor('Red')
             a.draw(GUI)
-            for x in range(2):
-                GUI.setBackground('LimeGreen')
-                time.sleep(.5)
-                GUI.setBackground('Black')
-                time.sleep(.5)
+            b.draw(GUI)
+            time.sleep(.01)
+            a.undraw()
+            b.undraw()
+    if n == Winning_number:
+        show_number = Text(Point(325,325), Winning_number)
+        show_number.setSize(300)
+        show_number.setTextColor('Red')
+        show_number.draw(GUI)
+        time.sleep(1)
+        show_number.undraw()
+        wn.undraw()
+        wnt.undraw()
+        a = Text(Point(325,325),'You Win!')
+        a.setSize(100)
+        a.setTextColor('Red')
+        a.draw(GUI)
+        for x in range(2):
+            GUI.setBackground('LimeGreen')
+            time.sleep(.5)
+            GUI.setBackground('Black')
+            time.sleep(.5)
+        GUI.close()
+        if Admin == False:
+            Money += 5 * int(Bet)
+            print('Money:', Money)
+        else:
             GUI.close()
             Risk = int(input('Risk: '))
             Money += Risk * int(Bet)
-            print('Money: ', Money)
-        else:
-            show_number = Text(Point(325,325), n)
-            show_number.setSize(300)
-            show_number.setTextColor('Red')
-            show_number.draw(GUI)
-            time.sleep(1)
-            show_number.undraw()
-            wn.undraw()
-            wnt.undraw()
-            Money -= int(Bet)
-            a = Text(Point(325,325),'You Lose')
-            a.setSize(100)
-            a.setTextColor('LimeGreen')
-            a.draw(GUI)
-            for x in range(2):
-                GUI.setBackground('Red')
-                time.sleep(.5)
-                GUI.setBackground('Black')
-                time.sleep(.5)
-            GUI.close()
-            print('Money: ', Money)
+            print('Money:', Money)
+    else:
+        show_number = Text(Point(325,325), n)
+        show_number.setSize(300)
+        show_number.setTextColor('Red')
+        show_number.draw(GUI)
+        time.sleep(1)
+        show_number.undraw()
+        wn.undraw()
+        wnt.undraw()
+        Money -= int(Bet)
+        a = Text(Point(325,325),'You Lose')
+        a.setSize(100)
+        a.setTextColor('LimeGreen')
+        a.draw(GUI)
+        for x in range(2):
+            GUI.setBackground('Red')
+            time.sleep(.5)
+            GUI.setBackground('Black')
+            time.sleep(.5)
+        GUI.close()
+        print('Money: ', Money)
 def Hangman(Bet):
     global Money
     if int(Bet) < 200:
@@ -610,131 +445,74 @@ def Hangman(Bet):
         guessed = []
         if Admin == False:
             print(ShowWord)
-            while guess != word and NOG <= 7:
-                if ShowWord == word:
-                    print('YOU GUESSED THE WORD!!!!')
-                    if Letters > 11:
-                        Money += 4* int(Bet)
-                    else:
-                        Money += 3 * int(Bet)
-                    print('Money:',Money)
-                    break
-                guess = input('Guess a letter, guess the word if you know it: ').lower()
-                while guess not in letters and guess != word:
-                    guess = input('That is not a valid letter. Choose again: ').lower()
-                while guess in guessed:
-                    guess = input('You already guessed that letter. Choose again: ').lower()
-                if guess == word:
-                    print('YOU GUESSED THE WORD!!!!!')
-                    if Letters > 11:
-                        Money += 4* int(Bet)
-                    else:
-                        Money += 3 * int(Bet)
-                    print('Money:',Money)
+        else:
+            print('Word:', word)
+        while guess != word and NOG <= 6:
+            if ShowWord == word:
+                print('YOU GUESSED THE WORD!!!!')
+                if Letters > 11:
+                    Money += 4* int(Bet)
                 else:
-                    if word.count(guess) > 1:
-                        location = []
-                        a = []
-                        x = 0
-                        y = 0
-                        z = -1
-                        while x < word.count(guess):
-                            z = word.find(guess, z+1)
-                            location.append(z)
-                            x += 1
-                        for x in range(len(word)):
-                            a.append(ShowWord[x])
-                        while y < word.count(guess):
-                            a[location[y]] = guess
-                            y += 1
-                        ShowWord = ''.join(a)
-                        print('There are', word.count(guess), guess, "'s in the word")
-                        guessed.append(guess)
-                    elif word.count(guess) == 1:
-                        a = []
-                        location = word.find(guess)
-                        for x in range(len(word)):
-                            a.append(ShowWord[x])
-                        a[location] = guess
-                        ShowWord = ''.join(a)
-                        print('There is 1', guess, 'In the word')
-                        guessed.append(guess)
-                    else:
-                        print('That letter is not in the word')
-                        guessed.append(guess)
-                        NOG += 1
-                    print('Guesses remaining: ', 13 - NOG)
-                    print(ShowWord)
-                    print('Guessed Letters:')
-                    for x in guessed:
-                        print(' -', x)
-            if NOG == 13:
-                print('You are out of guesses')
-                print('The word was:', word)
-                Money -= Bet
+                    Money += 3 * int(Bet)
                 print('Money:',Money)
-        elif Admin == True:
-            print('Word:',word)
-            print(ShowWord)
-            while guess != word:
-                if ShowWord == word:
-                    print('YOU GUESSED THE WORD!!!!')
-                    if Letters > 11:
-                        Money += 4* int(Bet)
-                    else:
-                        Money += 3 * int(Bet)
-                    print('Money:',Money)
-                    break
-                guess = input('Guess a letter, guess the word if you know it: ').lower()
-                while guess not in letters and guess != word:
-                    guess = input('That is not a valid letter. Choose again: ').lower()
-                while guess in guessed:
-                    guess = input('You already guessed that letter. Choose again: ').lower()
-                if guess == word:
-                    print('YOU GUESSED THE WORD!!!!!')
-                    if Letters > 11:
-                        Money += 4* int(Bet)
-                    else:
-                        Money += 3 * int(Bet)
-                    print('Money:',Money)
+                break
+            guess = input('Guess a letter, guess the word if you know it: ').lower()
+            while guess not in letters and guess != word:
+                guess = input('That is not a valid letter. Choose again: ').lower()
+            while guess in guessed:
+                guess = input('You already guessed that letter. Choose again: ').lower()
+            if guess == word:
+                print('YOU GUESSED THE WORD!!!!!')
+                if Letters > 11:
+                    Money += 4* int(Bet)
                 else:
-                    if word.count(guess) > 1:
-                        location = []
-                        a = []
-                        x = 0
-                        y = 0
-                        z = -1
-                        while x < word.count(guess):
-                            z = word.find(guess, z+1)
-                            location.append(z)
-                            x += 1
-                        for x in range(len(word)):
-                            a.append(ShowWord[x])
-                        while y < word.count(guess):
-                            a[location[y]] = guess
-                            y += 1
-                        ShowWord = ''.join(a)
-                        print('There are', word.count(guess), guess, "'s in the word")
-                        guessed.append(guess)
-                    elif word.count(guess) == 1:
-                        a = []
-                        location = word.find(guess)
-                        for x in range(len(word)):
-                            a.append(ShowWord[x])
-                        a[location] = guess
-                        ShowWord = ''.join(a)
-                        print('There is 1', guess, 'In the word')
-                        guessed.append(guess)
-                    else:
-                        print('That letter is not in the word')
-                        guessed.append(guess)
-                        NOG += 1
-                    print('Guesses remaining: N/A')
+                    Money += 3 * int(Bet)
+                print('Money:',Money)
+            else:
+                if word.count(guess) > 1:
+                    location = []
+                    a = []
+                    x = 0
+                    y = 0
+                    z = -1
+                    while x < word.count(guess):
+                        z = word.find(guess, z+1)
+                        location.append(z)
+                        x += 1
+                    for x in range(len(word)):
+                        a.append(ShowWord[x])
+                    while y < word.count(guess):
+                        a[location[y]] = guess
+                        y += 1
+                    ShowWord = ''.join(a)
+                    print('There are', word.count(guess), guess, "'s in the word")
+                    guessed.append(guess)
+                elif word.count(guess) == 1:
+                    a = []
+                    location = word.find(guess)
+                    for x in range(len(word)):
+                        a.append(ShowWord[x])
+                    a[location] = guess
+                    ShowWord = ''.join(a)
+                    print('There is 1', guess, 'In the word')
+                    guessed.append(guess)
+                else:
+                    print('That letter is not in the word')
+                    guessed.append(guess)
+                    NOG += 1
+                    print('Guesses remaining:', 7 - NOG)
+                if Admin == True:
                     print('Word:', word)
-                    print(ShowWord)
+                print(ShowWord)
+                if ShowWord != word:
                     print('Guessed Letters:')
                     for x in guessed:
                         print(' -', x)
+        if NOG == 7:
+            print('You are out of guesses')
+            print('The word was:', word)
+            Money -= Bet
+            print('Money:',Money)
     else:
         Word_1 = 'pumpkin'
         Word_2 = 'racecar'
@@ -822,134 +600,76 @@ def Hangman(Bet):
             word = Word_26
         elif number == 'challenge':
             word = Word_27
+        Letters = len(word)
+        ShowWord = '_' * Letters
         if Admin == False:
-            Letters = len(word)
-            ShowWord = '_' * Letters
             print(ShowWord)
-            guess = ''
-            NOG = 0
-            guessed = []
-            while guess != word and NOG <= 7:
-                if ShowWord == word:
-                    print('YOU GUESSED THE WORD!!!!')
-                    Money += 2 * int(Bet)
-                    print('Money:',Money)
-                    break
-                guess = input('Guess a letter, guess the word if you know it: ').lower()
-                while guess not in letters and guess != word:
-                    guess = input('That is not a valid letter. Choose again: ').lower()
-                while guess in guessed:
-                    guess = input('You already guessed that letter. Choose again: ').lower()
-                if guess == word:
-                    print('YOU GUESSED THE WORD!!!!!')
-                    Money += 2 * int(Bet)
-                    print('Money:',Money)
-                else:
-                    if word.count(guess) > 1:
-                        location = []
-                        a = []
-                        x = 0
-                        y = 0
-                        z = -1
-                        while x < word.count(guess):
-                            z = word.find(guess, z+1)
-                            location.append(z)
-                            x += 1
-                        for x in range(len(word)):
-                            a.append(ShowWord[x])
-                        while y < word.count(guess):
-                            a[location[y]] = guess
-                            y += 1
-                        ShowWord = ''.join(a)
-                        print('There are', word.count(guess), guess, "'s in the word")
-                        guessed.append(guess)
-                    elif word.count(guess) == 1:
-                        a = []
-                        location = word.find(guess)
-                        for x in range(len(word)):
-                            a.append(ShowWord[x])
-                        a[location] = guess
-                        ShowWord = ''.join(a)
-                        print('There is 1', guess, 'In the word')
-                        guessed.append(guess)
-                    else:
-                        print('That letter is not in the word')
-                        guessed.append(guess)
-                        NOG += 1
-                    print('Guesses remaining:', 13 - NOG)
-                    print(ShowWord)
-                    print('Guessed Letters:')
-                    for x in guessed:
-                        print(' -', x)
-            if NOG == 13:
-                print('You are out of guesses')
-                print('The word was:', word)
-                Money -= Bet
-                print('Money:',Money)
-        if Admin == True:
-            Letters = len(word)
-            ShowWord = '_' * Letters
+        else:
             print(word)
             print(ShowWord)
-            guess = ''
-            guessed = []
-            while guess != word:
-                if ShowWord == word:
-                    print('YOU GUESSED THE WORD!!!!')
-                    Money += 2 * int(Bet)
-                    print('Money:',Money)
-                    break
-                guess = input('Guess a letter, guess the word if you know it: ').lower()
-                while guess not in letters and guess != word:
-                    guess = input('That is not a valid letter. Choose again: ').lower()
-                while guess in guessed:
-                    guess = input('You already guessed that letter. Choose again: ').lower()
-                if guess == word:
-                    print('YOU GUESSED THE WORD!!!!!')
-                    Money += 2 * int(Bet)
-                    print('Money:',Money)
+        guess = ''
+        NOG = 0
+        guessed = []
+        while guess != word and NOG <= 6:
+            if ShowWord == word:
+                print('YOU GUESSED THE WORD!!!!')
+                Money += 2 * int(Bet)
+                print('Money:',Money)
+                break
+            guess = input('Guess a letter, guess the word if you know it: ').lower()
+            while guess not in letters and guess != word:
+                guess = input('That is not a valid letter. Choose again: ').lower()
+            while guess in guessed:
+                guess = input('You already guessed that letter. Choose again: ').lower()
+            if guess == word:
+                print('YOU GUESSED THE WORD!!!!!')
+                Money += 2 * int(Bet)
+                print('Money:',Money)
+            else:
+                if word.count(guess) > 1:
+                    location = []
+                    a = []
+                    x = 0
+                    y = 0
+                    z = -1
+                    while x < word.count(guess):
+                        z = word.find(guess, z+1)
+                        location.append(z)
+                        x += 1
+                    for x in range(len(word)):
+                        a.append(ShowWord[x])
+                    while y < word.count(guess):
+                        a[location[y]] = guess
+                        y += 1
+                    ShowWord = ''.join(a)
+                    print('There are', word.count(guess), guess, "'s in the word")
+                    guessed.append(guess)
+                elif word.count(guess) == 1:
+                    a = []
+                    location = word.find(guess)
+                    for x in range(len(word)):
+                        a.append(ShowWord[x])
+                    a[location] = guess
+                    ShowWord = ''.join(a)
+                    print('There is 1', guess, 'In the word')
+                    guessed.append(guess)
                 else:
-                    if word.count(guess) > 1:
-                        location = []
-                        a = []
-                        x = 0
-                        y = 0
-                        z = -1
-                        while x < word.count(guess):
-                            z = word.find(guess, z+1)
-                            location.append(z)
-                            x += 1
-                        for x in range(len(word)):
-                            a.append(ShowWord[x])
-                        while y < word.count(guess):
-                            a[location[y]] = guess
-                            y += 1
-                        ShowWord = ''.join(a)
-                        print('There are', word.count(guess), guess, "'s in the word")
-                        guessed.append(guess)
-                    elif word.count(guess) == 1:
-                        a = []
-                        location = word.find(guess)
-                        for x in range(len(word)):
-                            a.append(ShowWord[x])
-                        a[location] = guess
-                        ShowWord = ''.join(a)
-                        print('There is 1', guess, 'In the word')
-                        guessed.append(guess)
-                    else:
-                        print('That letter is not in the word')
-                        guessed.append(guess)
-                    print('Guesses remaining: N/A')
-                    print('Word:',word)
-                    print(ShowWord)
+                    print('That letter is not in the word')
+                    guessed.append(guess)
+                    NOG += 1
+                    print('Guesses remaining:', 7 - NOG)
+                if Admin == True:
+                    print('Word:', word)
+                print(ShowWord)
+                if ShowWord != word:
                     print('Guessed Letters:')
                     for x in guessed:
                         print(' -', x)
-            if NOG == 13:
-                print('You are out of guesses')
-                print('The word was:', word)
-                Money -= Bet
-                print('Money:',Money)
+        if NOG == 7:
+            print('You are out of guesses')
+            print('The word was:', word)
+            Money -= Bet
+            print('Money:',Money)
 global Admin
 Admin = False
 Money = 100000
