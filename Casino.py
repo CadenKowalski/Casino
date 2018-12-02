@@ -1449,61 +1449,62 @@ def Trust(game_number, Bet):
             rounds = int(input('How many rounds do you want them to play against each other?: '))
         for game in range(len(finalists)): 
             for match in range(len(finalists)):
-                print(finalists[game] + ' vs: ' + str(finalists[match]))
-                for roundd in range(rounds):
-                    player_coins[finalists[game]] -= 1
-                    if finalists[game] == 'Allison':
-                        Allison()
-                    elif finalists[game] == 'Pete':
-                        Pete()
-                    elif finalists[game] == 'Randy':
-                        Randy()
-                    elif finalists[game] == 'Jackson':
-                        Jackson()
-                    elif finalists[game] == 'Emily':
-                        Emily()
-                    elif finalists[game] == 'Sahra':
-                        Sahra()
-                    elif finalists[game] == 'Falken':
-                        Falken()
-                    if trust == True:
-                        p1_trust = True
-                    else:
-                        p1_trust = False
-                    player_coins[finalists[match]] -= 1
-                    if finalists[match] == 'Allison':
-                        Allison()
-                    elif finalists[match] == 'Pete':
-                        Pete()
-                    elif finalists[match] == 'Randy':
-                        Randy()
-                    elif finalists[match] == 'Jackson':
-                        Jackson()
-                    elif finalists[match] == 'Emily':
-                        Emily()
-                    elif finalists[match] == 'Sahra':
-                        Sahra()
-                    elif finalists[match] == 'Falken':
-                        Falken()
-                    # -------------------------------------------------------------------------------------------------------
-                    # Coin assignment:
-                    
-                    if p1_trust == True and trust == True:
-                        player_coins[finalists[game]] += 2
-                        player_coins[finalists[match]] += 2
-                    elif p1_trust == True and trust == False:
-                        player_coins[finalists[game]] += 1
-                        player_coins[finalists[match]] += 3
-                    elif p1_trust == False and trust == True:
-                        player_coins[finalists[game]] += 3
-                        player_coins[finalists[match]] += 1
-                    elif p1_trust == False and trust == False:
-                        player_coins[finalists[game]] += 1
-                        player_coins[finalists[match]] += 1
-                print(finalists[game] + "'s coins: " + str(player_coins[finalists[game]]))
-                print(finalists[match] + "'s coins: " + str(player_coins[finalists[match]]))
-                print('XXXXXXXXXXXXXXXXXXXXXXXX')
-        # -------------------------------------------------------------------------------------------------------
+                if finalists[game] != finalists[match]:
+                    print(finalists[game] + ' vs: ' + str(finalists[match]))
+                    for roundd in range(rounds):
+                        player_coins[finalists[game]] -= 1
+                        if finalists[game] == 'Allison':
+                            Allison()
+                        elif finalists[game] == 'Pete':
+                            Pete()
+                        elif finalists[game] == 'Randy':
+                            Randy()
+                        elif finalists[game] == 'Jackson':
+                            Jackson()
+                        elif finalists[game] == 'Emily':
+                            Emily()
+                        elif finalists[game] == 'Sahra':
+                            Sahra()
+                        elif finalists[game] == 'Falken':
+                            Falken()
+                        if trust == True:
+                            p1_trust = True
+                        else:
+                            p1_trust = False
+                        player_coins[finalists[match]] -= 1
+                        if finalists[match] == 'Allison':
+                            Allison()
+                        elif finalists[match] == 'Pete':
+                            Pete()
+                        elif finalists[match] == 'Randy':
+                            Randy()
+                        elif finalists[match] == 'Jackson':
+                            Jackson()
+                        elif finalists[match] == 'Emily':
+                            Emily()
+                        elif finalists[match] == 'Sahra':
+                            Sahra()
+                        elif finalists[match] == 'Falken':
+                            Falken()
+                        # -------------------------------------------------------------------------------------------------------
+                        # Coin assignment:
+                        
+                        if p1_trust == True and trust == True:
+                            player_coins[finalists[game]] += 2
+                            player_coins[finalists[match]] += 2
+                        elif p1_trust == True and trust == False:
+                            player_coins[finalists[game]] += 1
+                            player_coins[finalists[match]] += 3
+                        elif p1_trust == False and trust == True:
+                            player_coins[finalists[game]] += 3
+                            player_coins[finalists[match]] += 1
+                        elif p1_trust == False and trust == False:
+                            player_coins[finalists[game]] += 1
+                            player_coins[finalists[match]] += 1
+                    print(finalists[game] + "'s coins: " + str(player_coins[finalists[game]]))
+                    print(finalists[match] + "'s coins: " + str(player_coins[finalists[match]]))
+                    print('XXXXXXXXXXXXXXXXXXXXXXXX')
+            # -------------------------------------------------------------------------------------------------------
         # Winning logic:
         
         value = list(player_coins.values())
