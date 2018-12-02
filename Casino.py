@@ -951,6 +951,761 @@ def BS(Bet):
             print('House Wins')
             Money -= int(Bet)
             print('Money:', Money)
+def Trust(game_number, Bet):
+    if Admin == False:
+        while Bet > 1000 and Bet < 1:
+            print('Invalid input')
+            Bet = input('Bet: ')
+    global coins
+    global Money
+    # -------------------------------------------------------------------------------------------------------
+    #Players:
+    
+    players = ['Allison', 'Pete', 'Randy', 'Jackson', 'Emily', 'Sahra', 'Falken']
+    def Allison():
+        # Decision is always to Cooperate
+        global trust
+        trust = True
+        
+    def Pete():
+        # Decision is always to Cheat
+        global trust
+        trust = False
+
+    def Randy():
+        # Decision is the same as other player
+        pass
+    
+    def Jackson():
+        # Decision is always opposite of other player
+        global trust
+        if trust == True:
+            trust = False
+        else:
+            trust = True
+    
+    def Emily():
+        # Emily will cooperate until you cheat in which case she will cheat forever
+        global trust
+        global grudge
+        if grudge == True:
+            trust = False
+        else:
+            if trust == False:
+                grudge = True
+        
+    def Sahra():
+        # Decision is random
+        global trust
+        TF = random.randint(1,2)
+        if TF == 1:
+            trust = True
+        else:
+            trust = False
+
+    def Falken():
+        # Makes the best Decision possible based on simple logic
+        global trust
+        global trust_level
+        if trust == True:
+            trust_level += 1
+        elif trust == False:
+            trust_level = 0
+        if trust_level >= 3:
+            trust = False
+            
+    def Player_Turn():
+        global trust
+        global coins
+        global player_trust
+        # -------------------------------------------------------------------------------------------------------
+        # Player's turn:
+
+        coins -= 1
+        decision = input('Do you want to cheat or cooperate: ').lower()
+        while decision != 'cheat' and decision != 'cooperate':
+            print('Invalid input')
+            decision = input('Do you want to cheat or cooperate: ').lower()
+        if decision == 'cheat':
+            trust = False
+            player_trust = False
+        elif decision == 'cooperate':
+            trust = True
+            player_trust = True
+    # -------------------------------------------------------------------------------------------------------
+    #Game Modes:
+    
+    def Guess_Player():
+        global trust
+        global Money
+        global trust_level
+        global grudge
+        global coins
+        global player_trust
+        trust_level = 0
+        computer_coins = 1
+        grudge = False
+        player = random.randint(0,6)
+        rounds = random.randint(7, 12)
+        for roundd in range(rounds):
+            Player_Turn()
+            # -------------------------------------------------------------------------------------------------------
+            # Computer's turn:
+
+            computer_coins -= 1
+            if player == 0:
+                Allison()
+            elif player == 1:
+                Pete()
+            elif player == 2:
+                Randy()
+            elif player == 3:
+                Jackson()
+            elif player == 4:
+                Emily()
+            elif player == 5:
+                Sahra()
+            elif player == 6:
+                Falken()
+            if trust == True:
+                print('Cooperate')
+            else:
+                print('Cheat')
+            # -------------------------------------------------------------------------------------------------------
+            # Coin assignment:
+            
+            if player_trust == True and trust == True:
+                coins += 2
+                computer_coins += 2
+            elif player_trust == False and trust == True:
+                coins += 3
+                computer_coins += 1
+            elif player_trust == False and trust == False:
+                coins += 1
+                computer_coins += 1
+            elif player_trust == True and trust == False:
+                coins += 1
+                computer_coins += 3
+            print('Coins: ' + str(coins))
+            print("Opponent's coins: " + str(computer_coins))
+        # -------------------------------------------------------------------------------------------------------
+        # Guessing logic:
+        
+        print('Allison: always cooperates')
+        print('Pete: always cheats')
+        print('Randy: coppies your last decision')
+        print('Jackson: does the opposite of your last decision')
+        print('Emily: cooperates until you cheat on her')
+        print('Sahra: random chance of cooperating or cheating')
+        print('Falken: uses basic logic to make the best decision')
+        if Admin == True:
+            print('Player = ' + str(players[player]))
+        guess = input('What player were you playing against: ').capitalize()
+        while guess not in players:
+            print('Invalid input')
+            guess = input('What player were you playing against: ').capitalize()
+        # -------------------------------------------------------------------------------------------------------
+        # Winning logic:
+        
+        if guess == players[player]:
+            print('Correct!')
+            Money += 1.5 * Bet
+            print('Money: ' + str(int(Money)))
+        else:
+            print('Incorrect, the correct player was: ' + players[player])
+            Money -= Bet
+            print('Money: ' + str(int(Money)))
+            
+    def AI_vs():
+        global trust
+        global Money
+        global trust_level
+        global grudge
+        trust_level = 0
+        grudge = False
+        trust = True
+        p1_coins = 1
+        p2_coins = 1
+        # -------------------------------------------------------------------------------------------------------
+        # Get player logic:
+        
+        print('Allison: always cooperates')
+        print('Pete: always cheats')
+        print('Randy: coppies your last decision')
+        print('Jackson: does the opposite of your last decision')
+        print('Emily: cooperates until you cheat on her')
+        print('Sahra: random chance of cooperating or cheating')
+        print('Falken: uses basic logic to make the best decision')
+        p1 = input('Player 1: ').capitalize()
+        while p1 not in players:
+            print('Invalid input')
+            p1 = input('Player 1: ')
+        p2 = input('Player 2: ').capitalize()
+        while p2 not in players:
+            print('Invalid input')
+            p2 = input('Player 2: ')
+        guess = input('Who do you think will win: ').capitalize()
+        while guess != p1 and guess != p2:
+            print('Invalid input')
+            guess = input('Who do you think will win')
+        rounds = int(input('How many rounds do you want them to play: '))
+        while rounds > 20 or rounds < 1:
+            print('Invalid input')
+            rounds = int(input('How many rounds do you want them to play: '))
+        # -------------------------------------------------------------------------------------------------------
+        # AI's start playing:
+        
+        for roundd in range(rounds):
+            p1_coins -= 1
+            if p1 == 'Allison':
+                Allison()
+            elif p1 == 'Pete':
+                Pete()
+            elif p1 == 'Randy':
+                Randy()
+            elif p1 == 'Jackson':
+                Jackson()
+            elif p1 == 'Emily':
+                Emily()
+            elif p1 == 'Sahra':
+                Sahra()
+            elif p1 == 'Falken':
+                Falken()
+            if trust == True:
+                print(p1, 'Cooperated')
+                p1_trust = True
+            else:
+                print(p1, 'Cheated')
+                p1_trust = False
+            p2_coins -= 1
+            if p2 == 'Allison':
+                Allison()
+            elif p2 == 'Pete':
+                Pete()
+            elif p2 == 'Randy':
+                Randy()
+            elif p2 == 'Jackson':
+                Jackson()
+            elif p2 == 'Emily':
+                Emily()
+            elif p2 == 'Sahra':
+                Sahra()
+            elif p2 == 'Falken':
+                Falken()
+            if trust == True:
+                print(p2, 'Cooperated')
+            else:
+                print(p2, 'Cheated')
+            # -------------------------------------------------------------------------------------------------------
+            # Coin assignment:
+            
+            if p1_trust == True and trust == True:
+                p1_coins += 2
+                p2_coins += 2
+            elif p1_trust == True and trust == False:
+                p1_coins += 1
+                p2_coins += 3
+            elif p1_trust == False and trust == True:
+                p1_coins += 3
+                p2_coins += 1
+            elif p1_trust == False and trust == False:
+                p1_coins += 1
+                p2_coins += 1
+            print(p1 + "'s Coins: " + str(p1_coins))
+            print(p2 + "'s Coins: " + str(p2_coins))
+        # -------------------------------------------------------------------------------------------------------
+        # Winning logic:
+        
+        if p1_coins > p2_coins:
+            winner = p1
+        elif p2_coins > p1_coins:
+            winner = p2
+        else:
+            winner = guess
+        if guess == winner:
+            print('You were right, ' + winner, 'won!')
+            Money += int(1.25 * Bet)
+            print('Money: ' + str(Money))
+        else:
+            if Admin == True:
+                guess = input('Guess again: ').capitalize()
+            if guess == winner:
+                print('You were right, ' + winner, 'won!')
+                Money += int(1.25 * Bet)
+                print('Money: ' + str(Money))
+            else:
+                print('You were wrong, ' + winner, 'did not win')
+                Money -= Bet
+                print('Money: ' + str(Money))
+            
+    def Multiplayer():
+        p1_coins = 1
+        p2_coins = 1
+        coins_needed = int(input('How many coins do you want to have to get to?: '))
+        # -------------------------------------------------------------------------------------------------------
+        # Get Trust:
+        
+        def getTrust():
+            global trustEntry
+            global win
+            win = GraphWin('Trust Input', 500, 500)
+            trustEntry = Entry(Point(250,250), 9)
+            trustEntry.draw(win)
+            trustText = Text(Point(250, 150), 'Cheat or Cooperate')
+            trustText.setSize(40)
+            trustText.draw(win)
+            exitText = Text(Point(250, 350), 'Click anywhere to set trust')
+            exitText.setSize(40)
+            exitText.draw(win)
+            win.getMouse()
+        # -------------------------------------------------------------------------------------------------------
+        # Starting play:
+        
+        print('If you are in full screen mode, exit and click on the "Trust Input" window when it pops up')
+        while p1_coins < coins_needed and p2_coins < coins_needed:
+            print('Player 1')
+            p1_coins -= 1
+            getTrust()
+            trust = trustEntry.getText()
+            trust = trust.lower()
+            win.close()
+            while trust != 'cheat' and trust != 'cooperate':
+                print('Invalid input')
+                getTrust()
+                trust = trustEntry.getText()
+                trust = trust.lower()
+                win.close()
+            if trust == 'cheat':
+                trust = False
+                p1_trust = False
+            else:
+                trust = True
+                p1_trust = True
+            print('Player 2')
+            p2_coins -= 1
+            getTrust()
+            trust = trustEntry.getText()
+            trust = trust.lower()
+            win.close()
+            while trust != 'cheat' and trust != 'cooperate':
+                print('Invalid input')
+                getTrust()
+                trust = trustEntry.getText()
+                trust = trust.lower()
+                win.close()
+            if trust == 'cheat':
+                trust = False
+            else:
+                trust = True
+            # -------------------------------------------------------------------------------------------------------
+            # Coin assignment:
+
+            if p1_trust == True and trust == True:
+                p1_coins += 2
+                p2_coins += 2
+            elif p1_trust == True and trust == False:
+                p1_coins += 1
+                p2_coins += 3
+            elif p1_trust == False and trust == True:
+                p1_coins += 3
+                p2_coins += 1
+            elif p1_trust == False and trust == False:
+                p1_coins += 1
+                p2_coins += 1
+            print("Player 1's Coins: " + str(p1_coins))
+            print("Player 2's Coins: " + str(p2_coins))
+        if p1_coins > p2_coins:
+            print('Player 1 wins!!')
+        elif p2_coins> p1_coins:
+            print('Player 2 wins!!')
+        else:
+            print('It was a tie')
+            
+    def Tournament():
+        global trust
+        global Money
+        global trust_level
+        global grudge
+        trust = True
+        trust_level = 0
+        grudge = False
+        ps = []
+        finalists = []
+        player_coins = {}
+        matches = int(input('How many players do you want to play? (max 6): '))
+        while (matches % 2 != 0) or matches > 6:
+            print('Invalid input')
+            matches = int(input('How many players do you want to play? (max 6): '))
+        matches = int(matches / 2)
+        rounds = int(input('How many rounds do you want them to play per match?: '))
+        while rounds < 1 or rounds > 20:
+            print('Invalid input')
+            rounds = int(input('How many rounds do you want them to play per match?: '))
+        # -------------------------------------------------------------------------------------------------------
+        # Get players logic:
+        
+        print('Allison: always cooperates')
+        print('Pete: always cheats')
+        print('Randy: coppies your last decision')
+        print('Jackson: does the opposite of your last decision')
+        print('Emily: cooperates until you cheat on her')
+        print('Sahra: random chance of cooperating or cheating')
+        print('Falken: uses basic logic to make the best decision')
+        for match in range(1, matches + 1):
+            player = input('Player 1 for round ' + str(match) + ': ').capitalize()
+            while (player not in players) or player in ps:
+                print('Invalid input')
+                player = input('Player 1 for round ' + str(match) + ': ').capitalize()
+            ps.append(player)
+            player_coins[player] = 1
+            player = input('Player 2 for round ' + str(match) + ': ').capitalize()
+            while (player not in players) or player in ps:
+                print('Invalid input')
+                player = input('Player 2 for round ' + str(match) + ': ').capitalize()
+            ps.append(player)
+            player_coins[player] = 1
+        guess = input('Who do you think will win?: ').capitalize()
+        while guess not in players:
+            print('Invalid input')
+            guess = input('Who do you think will win?: ').capitalize()
+        # -------------------------------------------------------------------------------------------------------
+        # Play logic:
+        
+        for match in range(1, matches + 1):
+            print('Match: ' + str(match))
+            for roundd in range(rounds):
+                player_coins[ps[(match * 2) - 2]] -= 1
+                if ps[(match * 2) - 2] == 'Allison':
+                    Allison()
+                elif ps[(match * 2) - 2] == 'Pete':
+                    Pete()
+                elif ps[(match * 2) - 2] == 'Randy':
+                    Randy()
+                elif ps[(match * 2) - 2] == 'Jackson':
+                    Jackson()
+                elif ps[(match * 2) - 2] == 'Emily':
+                    Emily()
+                elif ps[(match * 2) - 2] == 'Sahra':
+                    Sahra()
+                elif ps[(match * 2) - 2] == 'Falken':
+                    Falken()
+                if trust == True:
+                    p1_trust = True
+                else:
+                    p1_trust = False
+                player_coins[ps[(match * 2) - 1]] -= 1
+                if ps[(match * 2) - 1] == 'Allison':
+                    Allison()
+                elif ps[(match * 2) - 1] == 'Pete':
+                    Pete()
+                elif ps[(match * 2) - 1] == 'Randy':
+                    Randy()
+                elif ps[(match * 2) - 1] == 'Jackson':
+                    Jackson()
+                elif ps[(match * 2) - 1] == 'Emily':
+                    Emily()
+                elif ps[(match * 2) - 1] == 'Sahra':
+                    Sahra()
+                elif ps[(match * 2) - 1] == 'Falken':
+                    Falken()
+                # -------------------------------------------------------------------------------------------------------
+                # Coin assignment:
+
+                if p1_trust == True and trust == True:
+                    player_coins[ps[(match * 2) - 2]] += 2
+                    player_coins[ps[(match * 2) - 1]] += 2
+                elif p1_trust == True and trust == False:
+                    player_coins[ps[(match * 2) - 2]] += 1
+                    player_coins[ps[(match * 2) - 1]] += 3
+                elif p1_trust == False and trust == True:
+                    player_coins[ps[(match * 2) - 2]] += 3
+                    player_coins[ps[(match * 2) - 1]] += 1
+                elif p1_trust == False and trust == False:
+                    player_coins[ps[(match * 2) - 2]] += 1
+                    player_coins[ps[(match * 2) - 1]] += 1
+                print(ps[(match * 2) - 2] + "'s coins: " + str(player_coins[ps[(match * 2) - 2]]))
+                print(ps[(match * 2) - 1] + "'s coins: " + str(player_coins[ps[(match * 2) - 1]]))
+            if player_coins[ps[(match * 2) - 2]] > player_coins[ps[(match * 2) - 1]]:
+                print(ps[(match * 2) - 2] + ' Wins!')
+                finalists.append(ps[(match * 2) - 2])
+            elif player_coins[ps[(match * 2) - 1]] > player_coins[ps[(match * 2) - 2]]:
+                print(ps[(match * 2) - 1] + ' Wins!')
+                finalists.append(ps[(match * 2) - 1])
+            else:
+                print('It was a tie')
+                finalists.append(ps[(match * 2) - 2])
+                finalists.append(ps[(match * 2) - 1])
+            print('XXXXXXXXXXXXXXXXXXX')
+        # -------------------------------------------------------------------------------------------------------
+        # Finals:
+
+        trust = True
+        print('Finalists:')
+        for name in finalists:
+            print(name)
+        rounds = int(input('How many rounds do you want them to play against each other?: '))
+        while rounds < 1 or rounds > 20:
+            print('Invalid input')
+            rounds = int(input('How many rounds do you want them to play against each other?: '))
+        for game in range(len(finalists)): 
+            for match in range(len(finalists)):
+                print(finalists[game] + ' vs: ' + str(finalists[match]))
+                for roundd in range(rounds):
+                    player_coins[finalists[game]] -= 1
+                    if finalists[game] == 'Allison':
+                        Allison()
+                    elif finalists[game] == 'Pete':
+                        Pete()
+                    elif finalists[game] == 'Randy':
+                        Randy()
+                    elif finalists[game] == 'Jackson':
+                        Jackson()
+                    elif finalists[game] == 'Emily':
+                        Emily()
+                    elif finalists[game] == 'Sahra':
+                        Sahra()
+                    elif finalists[game] == 'Falken':
+                        Falken()
+                    if trust == True:
+                        p1_trust = True
+                    else:
+                        p1_trust = False
+                    player_coins[finalists[match]] -= 1
+                    if finalists[match] == 'Allison':
+                        Allison()
+                    elif finalists[match] == 'Pete':
+                        Pete()
+                    elif finalists[match] == 'Randy':
+                        Randy()
+                    elif finalists[match] == 'Jackson':
+                        Jackson()
+                    elif finalists[match] == 'Emily':
+                        Emily()
+                    elif finalists[match] == 'Sahra':
+                        Sahra()
+                    elif finalists[match] == 'Falken':
+                        Falken()
+                    # -------------------------------------------------------------------------------------------------------
+                    # Coin assignment:
+                    
+                    if p1_trust == True and trust == True:
+                        player_coins[finalists[game]] += 2
+                        player_coins[finalists[match]] += 2
+                    elif p1_trust == True and trust == False:
+                        player_coins[finalists[game]] += 1
+                        player_coins[finalists[match]] += 3
+                    elif p1_trust == False and trust == True:
+                        player_coins[finalists[game]] += 3
+                        player_coins[finalists[match]] += 1
+                    elif p1_trust == False and trust == False:
+                        player_coins[finalists[game]] += 1
+                        player_coins[finalists[match]] += 1
+                print(finalists[game] + "'s coins: " + str(player_coins[finalists[game]]))
+                print(finalists[match] + "'s coins: " + str(player_coins[finalists[match]]))
+                print('XXXXXXXXXXXXXXXXXXXXXXXX')
+        # -------------------------------------------------------------------------------------------------------
+        # Winning logic:
+        
+        value = list(player_coins.values())
+        key = list(player_coins.keys())
+        print((key[value.index(max(value))]) + ' Wins!!')
+        if guess == key[value.index(max(value))]:
+            print('You guessed correctly!!')
+            Money += 5 * Bet
+            print('Money: ' + str(Money))
+        else:
+            if Admin == True:
+                guess = input('Guess again: ').capitalize()
+            if guess == key[value.index(max(value))]:
+                print('You guessed correctly!!')
+                Money += 5 * Bet
+                print('Money: ' + str(Money))
+            else:
+                print('You guessed incorrectly')
+                Money -= Bet
+                print('Money: ' + str(Money))
+
+    def All_in_one():
+        global trust
+        global Money
+        global trust_level
+        global grudge
+        trust = True
+        trust_level = 0
+        grudge = False
+        ps = []
+        finalists = []
+        player_coins = {'Allison' : 1, 'Pete' : 1, 'Randy' : 1, 'Jackson' : 1, 'Emily' : 1, 'Sahra' : 1, 'Falken' : 1}
+        # -------------------------------------------------------------------------------------------------------
+        # Setup:
+        
+        rounds = int(input('How many rounds do you want them to play: '))
+        while rounds < 1 or rounds > 20:
+            print('Invalid input')
+            rounds = int(input('How many rounds do you want them to play: '))
+        guess = input('Who do you think will win?: ').capitalize()
+        while guess not in players:
+            print('Invalid input')
+            guess = input('Who do you think will win?: ').capitalize()
+        for game in range(len(players)):
+            for match in range(len(players)):
+                if players[game] != players[match]:
+                    print(players[game] + ' vs: ' + str(players[match]))
+                    for roundd in range(rounds):
+                        player_coins[players[game]] -= 1
+                        if players[game] == 'Allison':
+                            Allison()
+                        elif players[game] == 'Pete':
+                            Pete()
+                        elif players[game] == 'Randy':
+                            Randy()
+                        elif players[game] == 'Jackson':
+                            Jackson()
+                        elif players[game] == 'Emily':
+                            Emily()
+                        elif players[game] == 'Sahra':
+                            Sahra()
+                        elif players[game] == 'Falken':
+                            Falken()
+                        if trust == True:
+                            p1_trust = True
+                        else:
+                            p1_trust = False
+                        player_coins[players[match]] -= 1
+                        if players[match] == 'Allison':
+                            Allison()
+                        elif players[match] == 'Pete':
+                            Pete()
+                        elif players[match] == 'Randy':
+                            Randy()
+                        elif players[match] == 'Jackson':
+                            Jackson()
+                        elif players[match] == 'Emily':
+                            Emily()
+                        elif players[match] == 'Sahra':
+                            Sahra()
+                        elif players[match] == 'Falken':
+                            Falken()
+                        # -------------------------------------------------------------------------------------------------------
+                        # Coin assignment:
+                        
+                        if p1_trust == True and trust == True:
+                            player_coins[players[game]] += 2
+                            player_coins[players[match]] += 2
+                        elif p1_trust == True and trust == False:
+                            player_coins[players[game]] += 1
+                            player_coins[players[match]] += 3
+                        elif p1_trust == False and trust == True:
+                            player_coins[players[game]] += 3
+                            player_coins[players[match]] += 1
+                        elif p1_trust == False and trust == False:
+                            player_coins[players[game]] += 1
+                            player_coins[players[match]] += 1
+                    print(players[game] + "'s coins: " + str(player_coins[players[game]]))
+                    print(players[match] + "'s coins: " + str(player_coins[players[match]]))
+                    print('XXXXXXXXXXXXXXXXXXXXXXXX')
+        # -------------------------------------------------------------------------------------------------------
+        # Winning Logic:
+
+        value = list(player_coins.values())
+        key = list(player_coins.keys())
+        print((key[value.index(max(value))]) + ' Wins!!')
+        if guess == key[value.index(max(value))]:
+            print('You guessed correctly!!')
+            Money += 3 * Bet
+            print('Money: ' + str(Money))
+        else:
+            guess = input('Guess again: ').capitalize()
+            if guess == 'Pete':
+                print('You guessed correctly!!')
+                Money += 3 * Bet
+                print('Money: ' + str(Money))
+            else:
+                print('You guessed incorrectly')
+                Money -= Bet
+                print('Money: ' + str(Money))
+                
+    def Sandbox():
+        global trust
+        global Money
+        global trust_level
+        global grudge
+        global coins
+        trust_level = 0
+        grudge = False
+        # -------------------------------------------------------------------------------------------------------
+        # Input player logic:
+        
+        print('Allison: always cooperates')
+        print('Pete: always cheats')
+        print('Randy: coppies your last decision')
+        print('Jackson: does the opposite of your last decision')
+        print('Emily: cooperates until you cheat on her')
+        print('Sahra: random chance of cooperating or cheating')
+        print('Falken: uses basic logic to make the best decision')
+        player = input('Which player do you want to play against: ').capitalize()
+        while player not in players:
+            print('Invalid input')
+            player = input('What player were you playing against: ').capitalize()
+        rounds = int(input('How many rounds do you want to play: '))
+        while rounds < 1 or rounds > 20:
+            print('Invalid input')
+            rounds = int(input('How many rounds do you want to play: '))
+        for roundd in range(rounds):
+            Player_Turn()
+            # -------------------------------------------------------------------------------------------------------
+            # Computer's turn:
+            
+            if player == 'Allison':
+                Allison()
+            elif player == 'Pete':
+                Pete()
+            elif player == 'Randy':
+                Randy()
+            elif player == 'Jackson':
+                Jackson()
+            elif player == 'Emily':
+                Emily()
+            elif player == 'Sahra':
+                Sahra()
+            elif player == 'Falken':
+                Falken()
+            if trust == True:
+                print('Cooperate')
+            else:
+                print('Cheat')
+            # -------------------------------------------------------------------------------------------------------
+            # Coin assignment:
+            
+            if player_trust == True and trust == True:
+                coins += 2
+            elif player_trust == False and trust == True:
+                coins += 3
+            elif player_trust == False and trust == False:
+                coins += 1
+            print('Coins: ' + str(coins))
+    # -------------------------------------------------------------------------------------------------------
+    # Gets what game the player wants play"
+
+    coins = 1
+    if game_number == '1':
+        Guess_Player()
+    elif game_number == '2':
+        AI_vs()
+    elif game_number == '3':
+        Multiplayer()
+    elif game_number == '4':
+        Tournament()
+    elif game_number == '5':
+        All_in_one()
+    elif game_number == '6':
+        if admin == False:
+            if coins >= 50:
+                Sandbox()
+            else:
+                print('Insufficient coins')
+        else:
+            Sandbox()
 global Admin
 Admin = False
 Money = 100000
@@ -961,9 +1716,10 @@ print('3.) Dice, Risk: 1.5-3x')
 print('4.) Black Jack, Risk: 2x or 5x')
 print('5.) Hangman, Risk: 2-4x')
 print('6.) BS, Risk: 3x or 10x')
-print('7.) Exit the Casino')
+print('7.) Trust, Risk 1.2-5x')
+print('8.) Exit the Casino')
 game = input('Select the number of the game you want to play: ')
-while game != '7':
+while game != '8':
     if game == '1':
         DescriptionYN = input('Do you want a description of this game?: ').lower()
         while DescriptionYN != 'yes' and DescriptionYN != 'no':
@@ -972,14 +1728,14 @@ while game != '7':
         if DescriptionYN == 'yes':
             print('When the "LowRiskSlots" window pops up, click anywhere on it to start the slots machine. Once it finishes, if the number on the screen matches the number next to "Winning Number", you won. After the animation, the window will close automatically and tell you how much you won or lost. If you are in full screen mode, exit and click on the "LowRiskSlots" window.')
         Bet = int(input('Bet: '))
-        if (Money - Bet) < 0:
+        while (Money - Bet) < 0:
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
         LowRiskSlots(Bet)
         PlayAgainO = input('Do you want to play again?: ')
         while PlayAgainO == 'yes':
             Bet = int(input('Bet: '))
-            if (Money - Bet) < 0:
+            while (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             LowRiskSlots(Bet)
@@ -992,14 +1748,14 @@ while game != '7':
         if DescriptionYN == 'yes':
             print('When the "HighRiskSlots" window pops up, click anywhere on it to start the slots machine. Once it finishes, if the number on the screen matches the number next to "Winning Number", you won. After the animation, the window will close automatically and tell you how much you won or lost. If you are in full screen mode, exit and click on the "HighRiskSlots" window.')
         Bet = int(input('Bet: '))
-        if (Money - Bet) < 0:
+        while (Money - Bet) < 0:
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
         HighRiskSlots(Bet)
         PlayAgainT = input('Do you want to play again?: ')
         while PlayAgainT == 'yes':
             Bet = int(input('Bet: '))
-            if (Money - Bet) < 0:
+            while (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             HighRiskSlots(Bet)
@@ -1012,14 +1768,14 @@ while game != '7':
         if DescriptionYN == 'yes':
             print('When you start the game, a dice will roll and return a value from 1-6. If that value is 2-6, it is added to your turn score. Then, it asks you if you want to roll again. If you say yes, the process will repeat. If not, your turn score will be added to your overall score. However, if you choose to roll again and roll a 1, the points from your turn get erased and not added to your overall score.')
         Bet = int(input('Bet: '))
-        if (Money - Bet) < 0:
+        while (Money - Bet) < 0:
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
         Dice(Bet)
         PlayAgainTh = input('Do you want to play again?: ')
         while PlayAgainTh =='yes':
             Bet = int(input('Bet: '))
-            if (Money - Bet) < 0:
+            while (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             Dice(Bet)
@@ -1032,14 +1788,14 @@ while game != '7':
         if DescriptionYN == 'yes':
             print('At the start of the game, you will be dealt 2 cards. The total of these to cards will be displayed. After that it will ask you if you want to hit (get another card) or stay (stop getting cards). If you choose to hit, you will be dealt another card and it will be added to your score. If you choose to stay, your total will be compared to the House. If your score is larger than theirs and less than or equal to 21, you win. If your score is less than theirs, you lose. If your score is greater than 21, the House automaticaly wins. If your first 2 cards add up to 21, that is Black Jack and you automatically win')
         Bet = int(input('Bet: '))
-        if (Money - Bet) < 0:
+        while (Money - Bet) < 0:
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
         BlackJack(Bet)
         PlayAgainF = input('Do you want to play again?: ')
         while PlayAgainF =='yes':
             Bet = int(input('Bet: '))
-            if (Money - Bet) < 0:
+            while (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             BlackJack(Bet)
@@ -1052,14 +1808,14 @@ while game != '7':
         if DescriptionYN == 'yes':
             print('When the game starts, choose if you want to make your own word or select one from a list. If you choose your own word and are in full screen mode, exit and click on the "Hangman Input" window. Once you have entered your word, click anywhere within the window to set it. After that, type your letter guess and then it will tell you if that letter is in the word. You have 7 wrong guesses and once you are out, you lose.') 
         Bet = int(input('Bet: '))
-        if (Money - Bet) < 0:
+        while (Money - Bet) < 0:
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
         Hangman(Bet)
         PlayAgainFI = input('Do you want to play again?: ')
         while PlayAgainFI == 'yes':
             Bet = int(input('Bet: '))
-            if (Money - Bet) < 0:
+            while (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             Hangman(Bet)
@@ -1072,19 +1828,52 @@ while game != '7':
         if DescriptionYN == 'yes':
             print('When the game starts, you will be asked how many players you want to play with. For example, if I put "4", it would be me and 3 Computers. Finally it will ask you what difficulty you want the computers to be set at. Making them harder will give you a bigger reward if you win. Then it will start the game. The first play of the game is allways putting down an ace face up so if you have an ace, you will go first but if you do not, one of the computers will go first. Then on your turn it will show you your hand and then tell you what card you are supposed to put down. ones are Aces, elevens are Jacks, twelves are Queens, and thirteens are Kings. It will ask you what card you want to put down and you can either put down the correct card or lie and put down a different card if you do not have the one you need. Then it will ask you how many of the card you want to put down so if you have more than one, you can put them all down together. Then on the computers turn, it will tell you what they played and how many cards they played. Then it will ask you if you want to call BS. By calling BS you are saying that you think they are lying and not putting down the card they are supposed to. If you are right and they are lying, they have to take all of the cards that have been played. If you are wrong and they did play what they were supposed to, you have to take all of the cards. The first person to 0 cards wins.')
         Bet = int(input('Bet: '))
-        if (Money - Bet) < 0:
+        while (Money - Bet) < 0:
             print('Insuficient Funds')
             Bet = int(input('Bet: '))
         BS(Bet)
         PlayAgainFI = input('Do you want to play again?: ')
         while PlayAgainFI == 'yes':
             Bet = int(input('Bet: '))
-            if (Money - Bet) < 0:
+            while (Money - Bet) < 0:
                 print('Insuficient Funds')
                 Bet = int(input('Bet: '))
             BS(Bet)
             PlayAgainFI = input('Do you want to play again?: ')
-    elif game == '8':
+    elif game == '7':
+        print('1.) Guess The Player')
+        print("2.) AI's compete")
+        print('3.) Multiplayer')
+        print('4.) Tournament')
+        print('5.) All in one')
+        print('6.) Sandbox')
+        game = input('Select the number of the game mode you want to play: ').lower()
+        while game != '1' and game != '2' and game != '3' and game != '4' and game != '5' and game != '6':
+              print('Invalid input')
+              game = input('Select the number of the game mode you want to play: ').lower()
+        Bet = int(input('Bet: '))
+        while (Money - Bet) < 0:
+            print('Insuficient Funds')
+            Bet = int(input('Bet: '))
+        Trust(game, Bet)
+        PlayAgainFI = input('Do you want to play again?: ')
+        while PlayAgainFI == 'yes':
+            print("2.) AI's compete")
+            print('3.) Multiplayer')
+            print('4.) Tournament')
+            print('5.) All in one')
+            print('6.) Sandbox')
+            game = input('Select the number of the game mode you want to play: ').lower()
+            while game != '1' and game != '2' and game != '3' and game != '4' and game != '5' and game != '6':
+                  print('Invalid input')
+                  game = input('Select the number of the game mode you want to play: ').lower()
+            Bet = int(input('Bet: '))
+            while (Money - Bet) < 0:
+                print('Insuficient Funds')
+                Bet = int(input('Bet: '))
+            Trust(game, Bet)
+            PlayAgainFI = input('Do you want to play again?: ')
+    elif game == '9':
         password = input('Security ID: ')
         if password == '699':
             Admin = True
@@ -1098,15 +1887,16 @@ while game != '7':
             else:
                 Money = 0
                 print('Money:', Money)
-                game = '7'
-    if game != '7':
+                game = '8'
+    if game != '8':
         print('1.) Low Risk Slots, Risk: 100x')
         print('2.) High Risk Slots, Risk: 1000x')
         print('3.) Dice, Risk: 1.5-3x')
         print('4.) Black Jack, Risk: 2x or 5x')
         print('5.) Hangman, Risk: 2-4x')
         print('6.) BS, Risk: 3x or 10x')
-        print('7.) Exit the Casino')
+        print('7.) Trust, Risk: 1.2-5x')
+        print('8.) Exit the Casino')
         game = input('Select the number of the game you want to play: ')
     else:
         pass
